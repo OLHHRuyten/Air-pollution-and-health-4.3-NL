@@ -21,6 +21,7 @@ require(yaml)
 
 # Title Page
 
+Naut Leuverink, Lucas Wolffenbuttel, Mike Ottervanger, Otto Ruyten, Nicolaas
 
 4.3
 
