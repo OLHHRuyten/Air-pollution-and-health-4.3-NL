@@ -11,16 +11,12 @@ output: pdf_document
 # install.packages("tidyverse")
 # install.packages("yaml")
 # install.packages("rmarkdown")
-# install.packages("dplyr")
-# install.packages("ggplot2")
-
 ```
 
 ```{r packages}
 require(tidyverse)
 require(rmarkdown)
 require(yaml)
-library(dplyr)
 ```
 
 # Title Page
@@ -111,25 +107,7 @@ Most of the datasets include a duration of time most often 2005 till 2024, and a
 Say we want to include only larger distances (above 2) in our dataset, we can filter for this.
 
 ```{r data_cleaning}
-
-BronnenvanFijnstof<- BronnenvanFijnstof [-nrow(BronnenvanFijnstof),]
-
-BronnenvanFijnstof <- BronnenvanFijnstof %>%
-  mutate(across(where(is.character),~ as.numeric(gsub(",",".", .x))))
-
-
-BronnenvanFijnstof$Totaal <- BronnenvanFijnstof$Landbouw..bosbouw.en.visserij..mln.kg.+ BronnenvanFijnstof$Particuliere.huishoudens..mln.kg.+ BronnenvanFijnstof$Energiesector..mln.kg.+ BronnenvanFijnstof$Industrie.en.afval..mln.kg.+ BronnenvanFijnstof$Vervoer..mln.kg.+ BronnenvanFijnstof$Diensten..water.en.bouw..mln.kg.
-
-```
-
-```{r}
-BronnenVanStikstof<- BronnenVanStikstof [-nrow(BronnenVanStikstof),]
-
-BronnenVanStikstof <- BronnenVanStikstof %>%
-  mutate(across(where(is.character),~ as.numeric(gsub(",",".", .x))))
-
-
-BronnenVanStikstof$Totaal <- BronnenVanStikstof$Landbouw..bosbouw.en.visserij..mln.kg.+ BronnenVanStikstof$Particuliere.huishoudens..mln.kg.+ BronnenVanStikstof$Energiesector..mln.kg.+ BronnenVanStikstof$Industrie.en.afval..mln.kg.+ BronnenVanStikstof$Vervoer..mln.kg.+ BronnenVanStikstof$Diensten..water.en.bouw..mln.kg.
+mean(dataset$percollege)
 ```
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
@@ -145,17 +123,7 @@ Variable 1
 Variable 2
 
 ```{r gen_var2}
-library(ggplot2)
 
-ggplot(BronnenvanFijnstof, aes(x = X., y = Totaal)) +
-  geom_line(linewidth = 1.2) +
-  geom_point(size = 2) +
-  labs(
-    title = "Totale fijnstofuitstoot per jaar",
-    x = "Jaar",
-    y = "Fijnstofuitstoot (mln kg)"
-  ) +
-  theme_minimal()
 ```
 
 ## 3.3 Visualize temporal variation
@@ -216,6 +184,15 @@ ggplot(BronnenVanStikstof_long,
     plot.title = element_text(hjust = 0.5, face = "bold")
 
   )
+```
+
+
+```{r}
+names(BronnenVanStikstof)
+
+sapply(BronnenVanStikstof, class)
+
+head(BronnenVanStikstof)
 ```
 
 ## 3.4 Visualize spatial variation
