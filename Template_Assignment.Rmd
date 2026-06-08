@@ -59,7 +59,7 @@ BronnenVanStikstof <- readRDS("data/BronnenVanStikstof.rds")
 saveRDS(BronnenvanFijnstof, "data/BronnenvanFijnstof.rds")
 BronnenvanFijnstof <- readRDS("data/BronnenVanFijnstof.rds")
 saveRDS(JaargemiddeldeFijnstof, "data/JaargemiddeldeFijnstof.rds")
-JaargemiddeldeFijnstof <- readRDS("data/JaargemiddeldeFijnstof")
+JaargemiddeldeFijnstof <- readRDS("data/JaargemiddeldeFijnstof.rds")
 ```
 
 ## 2.2 Provide a short summary of the dataset(s)
@@ -110,7 +110,7 @@ Say we want to include only larger distances (above 2) in our dataset, we can fi
 mean(dataset$percollege)
 ```
 
-Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc...
+Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
 
 ## 3.2 Generate necessary variables
 
@@ -129,7 +129,61 @@ Variable 2
 ## 3.3 Visualize temporal variation
 
 ```{r}
+library(tidyverse)
 
+names(BronnenVanStikstof)
+
+str(BronnenVanStikstof)
+
+head(BronnenVanStikstof)
+
+BronnenVanStikstof_long <- BronnenVanStikstof %>%
+
+  pivot_longer(
+
+    cols = -1,
+
+    names_to = "Bron",
+
+    values_to = "Uitstoot"
+
+  )
+
+ggplot(BronnenVanStikstof_long,
+
+       aes(x = 1,
+
+           y = Uitstoot,
+
+           fill = Bron)) +
+
+  geom_area(color = "white", linewidth = 0.2) +
+
+  scale_fill_brewer(palette = "Set3") +
+
+  labs(
+
+    title = "Stikstofuitstoot per bron",
+
+    x = "Jaar",
+
+    y = "Uitstoot",
+
+    fill = "Bron"
+
+  ) +
+
+  theme_bw() +
+
+  theme(
+
+    panel.grid.major = element_line(color = "grey80"),
+
+    panel.grid.minor = element_line(color = "grey90"),
+
+    plot.title = element_text(hjust = 0.5, face = "bold")
+
+  )
 ```
 
 ## 3.4 Visualize spatial variation
@@ -185,3 +239,8 @@ Provide the link to your PUBLIC repository here: ...
 ## 5.2 Reference list
 
 Use APA referencing throughout your document.
+For the datasets: BronnenvanFijnstof, BronnenVanStikstof and PolutionIngeneral are from CBS:
+
+Centraal Bureau voor de Statistiek. (2025, 2 september). Uitstoot luchtverontreinigende stoffen lager dan norm voor 2030. https://www.cbs.nl/nl-nl/nieuws/2025/36/uitstoot-luchtverontreinigende-stoffen-lager-dan-norm-voor-2030
+Dataset JaargemiddeldeFijnstof
+Planbureau voor de Leefomgeving. (z.d.). Atlas van de Regio. https://themasites.pbl.nl/atlas-regio/
