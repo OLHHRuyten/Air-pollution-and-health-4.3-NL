@@ -161,6 +161,24 @@ ggplot(BronnenvanFijnstof, aes(x = X., y = Totaal)) +
 ## 3.3 Visualize temporal variation
 
 ```{r}
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(BronnenVanStikstof, aes(x = X., y = Totaal)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  labs(
+    title = "Totale stikstofuitstoot per jaar",
+    x = "Jaar",
+    y = "Stikstofuitstoot (mln kg)"
+  ) +
+  theme_minimal()
+```
+
+
+```{r}
 library(tidyverse)
 
 names(BronnenVanStikstof)
