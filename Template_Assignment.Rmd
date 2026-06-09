@@ -114,12 +114,13 @@ Say we want to include only larger distances (above 2) in our dataset, we can fi
 
 ```{r data_cleaning}
 
+#Laatste rij was .cbs, die hebben we verwijderd
 BronnenvanFijnstof<- BronnenvanFijnstof [-nrow(BronnenvanFijnstof),]
 
 BronnenvanFijnstof <- BronnenvanFijnstof %>%
   mutate(across(where(is.character),~ as.numeric(gsub(",",".", .x))))
 
-
+#Nieuwe variabele gemaakt 
 BronnenvanFijnstof$Totaal <- BronnenvanFijnstof$Landbouw..bosbouw.en.visserij..mln.kg.+ BronnenvanFijnstof$Particuliere.huishoudens..mln.kg.+ BronnenvanFijnstof$Energiesector..mln.kg.+ BronnenvanFijnstof$Industrie.en.afval..mln.kg.+ BronnenvanFijnstof$Vervoer..mln.kg.+ BronnenvanFijnstof$Diensten..water.en.bouw..mln.kg.
 
 ```
@@ -133,6 +134,29 @@ BronnenVanStikstof <- BronnenVanStikstof %>%
 
 BronnenVanStikstof$Totaal <- BronnenVanStikstof$Landbouw..bosbouw.en.visserij..mln.kg.+ BronnenVanStikstof$Particuliere.huishoudens..mln.kg.+ BronnenVanStikstof$Energiesector..mln.kg.+ BronnenVanStikstof$Industrie.en.afval..mln.kg.+ BronnenVanStikstof$Vervoer..mln.kg.+ BronnenVanStikstof$Diensten..water.en.bouw..mln.kg.
 ```
+
+```{r}
+# Voor beide datasets wordt eerst de totale uitstoot per jaar berekend.
+# Vervolgens worden de totalen samengevoegd in één dataset op basis van het jaar.
+
+totaal_fijnstof <- rowSums(BronnenvanFijnstof[, -1], na.rm = TRUE)
+
+totaal_stikstof <- rowSums(BronnenVanStikstof[, -1], na.rm = TRUE)
+fijnstof_totaal <- data.frame(
+  Jaar = BronnenvanFijnstof[, 1],
+  Totaal_fijnstof = totaal_fijnstof
+)
+
+stikstof_totaal <- data.frame(
+  Jaar = BronnenVanStikstof[, 1],
+  Totaal_stikstof = totaal_stikstof
+)
+# Omdat stikstof tot 2023 loopt, loopt de gecombineerde tabel ook tot 2023.
+totale_data <- merge(fijnstof_totaal, stikstof_totaal, by = "Jaar")
+
+totale_data
+```
+
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
 
