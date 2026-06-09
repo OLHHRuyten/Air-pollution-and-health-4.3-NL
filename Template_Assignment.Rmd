@@ -42,7 +42,9 @@ Include the following:
 
 -   Why is this relevant?
 
--   ...
+-   Nitrogen emissions represent a critical public health crisis in the Netherlands. Elevated atmospheric concentrations lead to the production of particulate manner and ozone, which are closely associated with serious health problems such as worsening asthma, long-term cardiovascular problems, and diminished lung function.
+
+-   This report measures the correlation between public health concerns and regional nitrogen levels over almost 20 years, from 2005 to 2023. By analyzing these temporal and spatial patterns, we want to pinpoint pollution hotspots and offer a data-driven framework for focused reduction initiatives, like industrial restrictions or localized agriculture changes, to successfully lessen the burden on public health.
 
 # Part 2 - Data Sourcing
 
@@ -112,12 +114,13 @@ Say we want to include only larger distances (above 2) in our dataset, we can fi
 
 ```{r data_cleaning}
 
+#Laatste rij was .cbs, die hebben we verwijderd
 BronnenvanFijnstof<- BronnenvanFijnstof [-nrow(BronnenvanFijnstof),]
 
 BronnenvanFijnstof <- BronnenvanFijnstof %>%
   mutate(across(where(is.character),~ as.numeric(gsub(",",".", .x))))
 
-
+#Nieuwe variabele gemaakt 
 BronnenvanFijnstof$Totaal <- BronnenvanFijnstof$Landbouw..bosbouw.en.visserij..mln.kg.+ BronnenvanFijnstof$Particuliere.huishoudens..mln.kg.+ BronnenvanFijnstof$Energiesector..mln.kg.+ BronnenvanFijnstof$Industrie.en.afval..mln.kg.+ BronnenvanFijnstof$Vervoer..mln.kg.+ BronnenvanFijnstof$Diensten..water.en.bouw..mln.kg.
 
 ```
@@ -131,6 +134,29 @@ BronnenVanStikstof <- BronnenVanStikstof %>%
 
 BronnenVanStikstof$Totaal <- BronnenVanStikstof$Landbouw..bosbouw.en.visserij..mln.kg.+ BronnenVanStikstof$Particuliere.huishoudens..mln.kg.+ BronnenVanStikstof$Energiesector..mln.kg.+ BronnenVanStikstof$Industrie.en.afval..mln.kg.+ BronnenVanStikstof$Vervoer..mln.kg.+ BronnenVanStikstof$Diensten..water.en.bouw..mln.kg.
 ```
+
+```{r}
+# Voor beide datasets wordt eerst de totale uitstoot per jaar berekend.
+# Vervolgens worden de totalen samengevoegd in één dataset op basis van het jaar.
+
+totaal_fijnstof <- rowSums(BronnenvanFijnstof[, -1], na.rm = TRUE)
+
+totaal_stikstof <- rowSums(BronnenVanStikstof[, -1], na.rm = TRUE)
+fijnstof_totaal <- data.frame(
+  Jaar = BronnenvanFijnstof[, 1],
+  Totaal_fijnstof = totaal_fijnstof
+)
+
+stikstof_totaal <- data.frame(
+  Jaar = BronnenVanStikstof[, 1],
+  Totaal_stikstof = totaal_stikstof
+)
+# Omdat stikstof tot 2023 loopt, loopt de gecombineerde tabel ook tot 2023.
+totale_data <- merge(fijnstof_totaal, stikstof_totaal, by = "Jaar")
+
+totale_data
+```
+2 datasets naast elkaar gezet, en dat per jaar vergeleken, dataset fijnstof gaat tot 2024 en dataset stikstof gaat tot 2023, daar moest ik nog een aanpassing in maken. 
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
 
