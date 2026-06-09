@@ -42,7 +42,9 @@ Include the following:
 
 -   Why is this relevant?
 
--   ...
+-   Nitrogen emissions represent a critical public health crisis in the Netherlands. Elevated atmospheric concentrations lead to the production of particulate manner and ozone, which are closely associated with serious health problems such as worsening asthma, long-term cardiovascular problems, and diminished lung function.
+
+-   This report measures the correlation between public health concerns and regional nitrogen levels over almost 20 years, from 2005 to 2023. By analyzing these temporal and spatial patterns, we want to pinpoint pollution hotspots and offer a data-driven framework for focused reduction initiatives, like industrial restrictions or localized agriculture changes, to successfully lessen the burden on public health.
 
 # Part 2 - Data Sourcing
 
