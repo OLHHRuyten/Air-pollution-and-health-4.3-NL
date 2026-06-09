@@ -154,7 +154,7 @@ totale_data <- merge(fijnstof_totaal, stikstof_totaal, by = "Jaar")
 
 totale_data
 ```
-
+2 datasets naast elkaar gezet, en dat per jaar vergeleken, dataset fijnstof gaat tot 2024 en dataset stikstof gaat tot 2023, daar moest ik nog een aanpassing in maken. 
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
 
