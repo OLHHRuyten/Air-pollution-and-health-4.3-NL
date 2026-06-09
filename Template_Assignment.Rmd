@@ -139,21 +139,40 @@ Please use a separate 'R block' of code for each type of cleaning. So, e.g. one 
 Variable 1
 
 ```{r gen_var1}
+# 1. Laad de bibliotheek voor data manipulatie
+library(dplyr)
 
+# 2. Bereken de totalen per bron voor fijnstof
+totaal_fijnstof <- BronnenvanFijnstof %>%
+  group_by(Bron) %>%
+  summarise(Totaal_Fijnstof = sum(Uitstoot, na.rm = TRUE)) [cite: 73, 74]
+
+# 3. Bereken de totalen per bron voor stikstof
+totaal_stikstof <- BronnenVanStikstof %>%
+  group_by(Bron) %>%
+  summarise(Totaal_Stikstof = sum(Uitstoot, na.rm = TRUE)) [cite: 73, 74]
+
+# 4. Combineer de twee tabellen tot één overzicht
+gecombineerde_tabel <- full_join(totaal_fijnstof, totaal_stikstof, by = "Bron")
+
+# 5. Bekijk het resultaat
+gecombineerde_tabel
 ```
 
 Variable 2
 
 ```{r gen_var2}
+# Simple graph about the general emission of particulate matter (fijnstof)
+
 library(ggplot2)
 
 ggplot(BronnenvanFijnstof, aes(x = X., y = Totaal)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 2) +
   labs(
-    title = "Totale fijnstofuitstoot per jaar",
-    x = "Jaar",
-    y = "Fijnstofuitstoot (mln kg)"
+    title = "Total emissions of particulate matter over the years",
+    x = "Years",
+    y = "Particulate matter (mln kg)"
   ) +
   theme_minimal()
 ```
@@ -164,77 +183,45 @@ ggplot(BronnenvanFijnstof, aes(x = X., y = Totaal)) +
 ```
 
 ```{r}
+# Simple graph about the general emission of nitrogen (fijnstof)
+
 library(ggplot2)
 
 ggplot(BronnenVanStikstof, aes(x = X., y = Totaal)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 2) +
   labs(
-    title = "Totale stikstofuitstoot per jaar",
-    x = "Jaar",
-    y = "Stikstofuitstoot (mln kg)"
+    title = "Total nitrogen emissions over the years",
+    x = "Years",
+    y = "Nitrogen (mln kg)"
   ) +
   theme_minimal()
 ```
 
-
 ```{r}
-library(tidyverse)
-
-names(BronnenVanStikstof)
-
-str(BronnenVanStikstof)
-
-head(BronnenVanStikstof)
-
-BronnenVanStikstof_long <- BronnenVanStikstof %>%
-
-  pivot_longer(
-
-    cols = -1,
-
-    names_to = "Bron",
-
-    values_to = "Uitstoot"
-
-  )
+# A more complicated and extensive graph of the nitrogen emissions
 
 ggplot(BronnenVanStikstof_long,
-
-       aes(x = 1,
-
-           y = Uitstoot,
-
+       aes(x = X.,                                   # <--- The name of the data set
+           y = Uitstoot, 
            fill = Bron)) +
-
-  geom_area(color = "white", linewidth = 0.2) +
-
+  geom_area(color = "white", linewidth = 0.2) +       # <--- creating the background colour
   scale_fill_brewer(palette = "Set3") +
-
-  labs(
-
-    title = "Stikstofuitstoot per bron",
-
-    x = "Jaar",
-
-    y = "Uitstoot",
-
-    fill = "Bron"
-
+  labs(                                              # <--- Creating the names on the axes
+    title = "Nitrogen emissions per source",    
+    x = "Years",
+    y = "Emissions",
+    fill = "Sources"
   ) +
-
-  theme_bw() +
-
+  theme_bw() +                                      # <--- creating the grey background lines to to show scale
   theme(
-
     panel.grid.major = element_line(color = "grey80"),
-
     panel.grid.minor = element_line(color = "grey90"),
-
     plot.title = element_text(hjust = 0.5, face = "bold")
-
   )
 ```
+
+
 
 ## 3.4 Visualize spatial variation
 
