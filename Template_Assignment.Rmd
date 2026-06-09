@@ -9,8 +9,8 @@ output: pdf_document
 
 ```{r package_install, include=FALSE}
 # install.packages("tidyverse")
-# install.packages("yaml")
-# install.packages("rmarkdown")
+#install.packages("yaml")
+#install.packages("rmarkdown")
 ```
 
 ```{r packages}
