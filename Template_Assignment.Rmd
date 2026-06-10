@@ -42,7 +42,9 @@ Include the following:
 
 -   Why is this relevant?
 
--   ...
+-   Nitrogen emissions represent a critical public health crisis in the Netherlands. Elevated atmospheric concentrations lead to the production of particulate manner and ozone, which are closely associated with serious health problems such as worsening asthma, long-term cardiovascular problems, and diminished lung function.
+
+-   This report measures the correlation between public health concerns and regional nitrogen levels over almost 20 years, from 2005 to 2023. By analyzing these temporal and spatial patterns, we want to pinpoint pollution hotspots and offer a data-driven framework for focused reduction initiatives, like industrial restrictions or localized agriculture changes, to successfully lessen the burden on public health.
 
 # Part 2 - Data Sourcing
 
@@ -154,7 +156,7 @@ totale_data <- merge(fijnstof_totaal, stikstof_totaal, by = "Jaar")
 
 totale_data
 ```
-
+2 datasets naast elkaar gezet, en dat per jaar vergeleken, dataset fijnstof gaat tot 2024 en dataset stikstof gaat tot 2023, daar moest ik nog een aanpassing in maken. 
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
 
@@ -163,21 +165,40 @@ Please use a separate 'R block' of code for each type of cleaning. So, e.g. one 
 Variable 1
 
 ```{r gen_var1}
+# 1. Laad de bibliotheek voor data manipulatie
+library(dplyr)
 
+# 2. Bereken de totalen per bron voor fijnstof
+totaal_fijnstof <- BronnenvanFijnstof %>%
+  group_by(Bron) %>%
+  summarise(Totaal_Fijnstof = sum(Uitstoot, na.rm = TRUE)) [cite: 73, 74]
+
+# 3. Bereken de totalen per bron voor stikstof
+totaal_stikstof <- BronnenVanStikstof %>%
+  group_by(Bron) %>%
+  summarise(Totaal_Stikstof = sum(Uitstoot, na.rm = TRUE)) [cite: 73, 74]
+
+# 4. Combineer de twee tabellen tot één overzicht
+gecombineerde_tabel <- full_join(totaal_fijnstof, totaal_stikstof, by = "Bron")
+
+# 5. Bekijk het resultaat
+gecombineerde_tabel
 ```
 
 Variable 2
 
 ```{r gen_var2}
+# Simple graph about the general emission of particulate matter (fijnstof)
+
 library(ggplot2)
 
 ggplot(BronnenvanFijnstof, aes(x = X., y = Totaal)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 2) +
   labs(
-    title = "Totale fijnstofuitstoot per jaar",
-    x = "Jaar",
-    y = "Fijnstofuitstoot (mln kg)"
+    title = "Total emissions of particulate matter over the years",
+    x = "Years",
+    y = "Particulate matter (mln kg)"
   ) +
   theme_minimal()
 ```
@@ -188,77 +209,45 @@ ggplot(BronnenvanFijnstof, aes(x = X., y = Totaal)) +
 ```
 
 ```{r}
+# Simple graph about the general emission of nitrogen (fijnstof)
+
 library(ggplot2)
 
 ggplot(BronnenVanStikstof, aes(x = X., y = Totaal)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 2) +
   labs(
-    title = "Totale stikstofuitstoot per jaar",
-    x = "Jaar",
-    y = "Stikstofuitstoot (mln kg)"
+    title = "Total nitrogen emissions over the years",
+    x = "Years",
+    y = "Nitrogen (mln kg)"
   ) +
   theme_minimal()
 ```
 
-
 ```{r}
-library(tidyverse)
-
-names(BronnenVanStikstof)
-
-str(BronnenVanStikstof)
-
-head(BronnenVanStikstof)
-
-BronnenVanStikstof_long <- BronnenVanStikstof %>%
-
-  pivot_longer(
-
-    cols = -1,
-
-    names_to = "Bron",
-
-    values_to = "Uitstoot"
-
-  )
+# A more complicated and extensive graph of the nitrogen emissions
 
 ggplot(BronnenVanStikstof_long,
-
-       aes(x = 1,
-
-           y = Uitstoot,
-
+       aes(x = X.,                                   # <--- The name of the data set
+           y = Uitstoot, 
            fill = Bron)) +
-
-  geom_area(color = "white", linewidth = 0.2) +
-
+  geom_area(color = "white", linewidth = 0.2) +       # <--- creating the background colour
   scale_fill_brewer(palette = "Set3") +
-
-  labs(
-
-    title = "Stikstofuitstoot per bron",
-
-    x = "Jaar",
-
-    y = "Uitstoot",
-
-    fill = "Bron"
-
+  labs(                                              # <--- Creating the names on the axes
+    title = "Nitrogen emissions per source",    
+    x = "Years",
+    y = "Emissions",
+    fill = "Sources"
   ) +
-
-  theme_bw() +
-
+  theme_bw() +                                      # <--- creating the grey background lines to to show scale
   theme(
-
     panel.grid.major = element_line(color = "grey80"),
-
     panel.grid.minor = element_line(color = "grey90"),
-
     plot.title = element_text(hjust = 0.5, face = "bold")
-
   )
 ```
+
+
 
 ## 3.4 Visualize spatial variation
 
