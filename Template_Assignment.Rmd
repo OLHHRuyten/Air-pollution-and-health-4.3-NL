@@ -136,23 +136,25 @@ BronnenVanStikstof$Totaal <- BronnenVanStikstof$Landbouw..bosbouw.en.visserij..m
 ```
 
 ```{r}
-# Voor beide datasets wordt eerst de totale uitstoot per jaar berekend.
-# Vervolgens worden de totalen samengevoegd in één dataset op basis van het jaar.
+# De bestaande kolom 'Totaal' wordt gebruikt.
+# De totalen van fijnstof en stikstof worden gecombineerd op basis van het jaar.
+# Omdat stikstof tot en met 2023 loopt, loopt de gecombineerde tabel ook tot en met 2023.
 
-totaal_fijnstof <- rowSums(BronnenvanFijnstof[, -1], na.rm = TRUE)
-
-totaal_stikstof <- rowSums(BronnenVanStikstof[, -1], na.rm = TRUE)
 fijnstof_totaal <- data.frame(
   Jaar = BronnenvanFijnstof[, 1],
-  Totaal_fijnstof = totaal_fijnstof
+  Totaal_fijnstof = BronnenvanFijnstof$Totaal
 )
 
 stikstof_totaal <- data.frame(
   Jaar = BronnenVanStikstof[, 1],
-  Totaal_stikstof = totaal_stikstof
+  Totaal_stikstof = BronnenVanStikstof$Totaal
 )
-# Omdat stikstof tot 2023 loopt, loopt de gecombineerde tabel ook tot 2023.
-totale_data <- merge(fijnstof_totaal, stikstof_totaal, by = "Jaar")
+
+totale_data <- merge(
+  fijnstof_totaal,
+  stikstof_totaal,
+  by = "Jaar"
+)
 
 totale_data
 ```
