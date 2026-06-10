@@ -98,7 +98,7 @@ This dataset shows the sources of fine dust measured over a time period from 200
 ``` r
 inline_code = TRUE
 ```
-test wijziging
+
 These are things that are usually included in the metadata of the dataset. For your project, you need to provide us with the information from your metadata that we need to understand your dataset of choice.
 
 ## 2.3 Describe the type of variables included
