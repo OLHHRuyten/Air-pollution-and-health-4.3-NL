@@ -33,18 +33,17 @@ Fatima Amankour
 
 # Part 1 - Identify a Social Problem
 
-
 Use APA referencing throughout your document. [Here's a link to some explanation.](https://www.mendeley.com/guides/apa-citation-guide/)
 
 ## 1.1 Describe the Social Problem
 
 Include the following:
 
--   Why is this relevant?
+- Why is this relevant?
 
--   Nitrogen emissions represent a critical public health crisis in the Netherlands. Elevated atmospheric concentrations lead to the production of particulate manner and ozone, which are closely associated with serious health problems such as worsening asthma, long-term cardiovascular problems, and diminished lung function.
+- Nitrogen emissions represent a critical public health crisis in the Netherlands. Elevated atmospheric concentrations lead to the production of particulate manner and ozone, which are closely associated with serious health problems such as worsening asthma, long-term cardiovascular problems, and diminished lung function.
 
--   This report measures the correlation between public health concerns and regional nitrogen levels over almost 20 years, from 2005 to 2023. By analyzing these temporal and spatial patterns, we want to pinpoint pollution hotspots and offer a data-driven framework for focused reduction initiatives, like industrial restrictions or localized agriculture changes, to successfully lessen the burden on public health.
+- This report measures the correlation between public health concerns and regional nitrogen levels over almost 20 years, from 2005 to 2023. By analyzing these temporal and spatial patterns, we want to pinpoint pollution hotspots and offer a data-driven framework for focused reduction initiatives, like industrial restrictions or localized agriculture changes, to successfully lessen the burden on public health.
 
 # Part 2 - Data Sourcing
 
@@ -94,7 +93,6 @@ head(BronnenvanFijnstof)
 
 This dataset shows the sources of fine dust measured over a time period from 2005 till 2024
 
-
 ``` r
 inline_code = TRUE
 ```
@@ -103,8 +101,7 @@ These are things that are usually included in the metadata of the dataset. For y
 
 ## 2.3 Describe the type of variables included
 
-Most of the datasets include a duration of time most often 2005 till 2024, and a variable that may be a specific measuring station or a source of polution. 
-
+Most of the datasets include a duration of time most often 2005 till 2024, and a variable that may be a specific measuring station or a source of polution.
 
 # Part 3 - Quantifying
 
@@ -156,7 +153,8 @@ totale_data <- merge(fijnstof_totaal, stikstof_totaal, by = "Jaar")
 
 totale_data
 ```
-2 datasets naast elkaar gezet, en dat per jaar vergeleken, dataset fijnstof gaat tot 2024 en dataset stikstof gaat tot 2023, daar moest ik nog een aanpassing in maken. 
+
+2 datasets naast elkaar gezet, en dat per jaar vergeleken, dataset fijnstof gaat tot 2024 en dataset stikstof gaat tot 2023, daar moest ik nog een aanpassing in maken.
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
 
@@ -165,23 +163,23 @@ Please use a separate 'R block' of code for each type of cleaning. So, e.g. one 
 Variable 1
 
 ```{r gen_var1}
-# 1. Laad de bibliotheek voor data manipulatie
+# 1. Loads the correct datasets
 library(dplyr)
 
-# 2. Bereken de totalen per bron voor fijnstof
+# 2. Creates a sum of all the data points for particulate matter
 totaal_fijnstof <- BronnenvanFijnstof %>%
   group_by(Bron) %>%
   summarise(Totaal_Fijnstof = sum(Uitstoot, na.rm = TRUE)) [cite: 73, 74]
 
-# 3. Bereken de totalen per bron voor stikstof
+# 3. Creates a sum of all the data points for nitrogen
 totaal_stikstof <- BronnenVanStikstof %>%
   group_by(Bron) %>%
   summarise(Totaal_Stikstof = sum(Uitstoot, na.rm = TRUE)) [cite: 73, 74]
 
-# 4. Combineer de twee tabellen tot één overzicht
+# 4. Combines the two tables into one
 gecombineerde_tabel <- full_join(totaal_fijnstof, totaal_stikstof, by = "Bron")
 
-# 5. Bekijk het resultaat
+# 5. Shows us the result
 gecombineerde_tabel
 ```
 
@@ -206,10 +204,23 @@ ggplot(BronnenvanFijnstof, aes(x = X., y = Totaal)) +
 ## 3.3 Visualize temporal variation
 
 ```{r}
+# Simple graph about the general emission of particulate matter (fijnstof)
+
+library(ggplot2)
+
+ggplot(BronnenvanFijnstof, aes(x = X., y = Totaal)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  labs(
+    title = "Total particulate matter emissions over the years",
+    x = "Years",
+    y = "Particulate matter (mln kg)"
+  ) +
+  theme_minimal()
 ```
 
 ```{r}
-# Simple graph about the general emission of nitrogen (fijnstof)
+# Simple graph about the general emission of nitrogen 
 
 library(ggplot2)
 
@@ -246,8 +257,6 @@ ggplot(BronnenVanStikstof_long,
     plot.title = element_text(hjust = 0.5, face = "bold")
   )
 ```
-
-
 
 ## 3.4 Visualize spatial variation
 
@@ -301,9 +310,6 @@ Provide the link to your PUBLIC repository here: ...
 
 ## 5.2 Reference list
 
-Use APA referencing throughout your document.
-For the datasets: BronnenvanFijnstof, BronnenVanStikstof and PolutionIngeneral are from CBS:
+Use APA referencing throughout your document. For the datasets: BronnenvanFijnstof, BronnenVanStikstof and PolutionIngeneral are from CBS:
 
-Centraal Bureau voor de Statistiek. (2025, 2 september). Uitstoot luchtverontreinigende stoffen lager dan norm voor 2030. https://www.cbs.nl/nl-nl/nieuws/2025/36/uitstoot-luchtverontreinigende-stoffen-lager-dan-norm-voor-2030
-Dataset JaargemiddeldeFijnstof
-Planbureau voor de Leefomgeving. (z.d.). Atlas van de Regio. https://themasites.pbl.nl/atlas-regio/
+Centraal Bureau voor de Statistiek. (2025, 2 september). Uitstoot luchtverontreinigende stoffen lager dan norm voor 2030. <https://www.cbs.nl/nl-nl/nieuws/2025/36/uitstoot-luchtverontreinigende-stoffen-lager-dan-norm-voor-2030> Dataset JaargemiddeldeFijnstof Planbureau voor de Leefomgeving. (z.d.). Atlas van de Regio. <https://themasites.pbl.nl/atlas-regio/>
