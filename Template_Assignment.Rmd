@@ -532,10 +532,10 @@ ggplot(BA_BronnenVanStikstof_long,
            fill = Bron)) +
   geom_area(color = "white", linewidth = 0.2) +       # <--- Creëert de witte scheidingslijntjes
   
-  # --- NIEUW: De dikke verticale lijn voor 2014 ---
-  geom_vline(xintercept = 2014, 
+  # 5. lijn event analyse 2019 ---
+  geom_vline(xintercept = 2019, 
              color = "darkred", 
-             linewidth = 1.5, 
+             linewidth = 1, 
              linetype = "dashed") + 
   # ------------------------------------------------
   
@@ -554,7 +554,7 @@ ggplot(BA_BronnenVanStikstof_long,
   )
 ```
 
-Here you provide a description of why the plot above is relevant to your specific social problem.
+In the graph you see that there is a strong drop in nitrogen emissions across multiple sources from 2019 onward. This can be explained by multiple factors, such as new more strict emissions laws by the Dutch government and also the EU. These laws include a lowering of the speed limit to 100 km/h, causing a sharp drop in vehicle emissions. The laws also include the freezing of a lot of infrastructure and other building projects causing a drop in services and industry emissions. And then from late 2019 and 2020 onward there was the COVID pandemic causing lower emissions in almost all sectors.
 
 # Part 4 - Discussion
 
