@@ -13,8 +13,8 @@ output: pdf_document
 # install.packages("rmarkdown")
 # install.packages("dplyr")
 # install.packages("ggplot2")
-# install.packages("sf")                    Nog te installeren!!!
-# install.packages("rnaturalearth")         Nog te installeren!!!
+# install.packages("sf")                    
+# install.packages("rnaturalearth")         
 ```
 
 ```{r packages}
@@ -446,7 +446,99 @@ Here you provide a description of why the plot above is relevant to your specifi
 Analyze the relationship between two variables.
 
 ```{r analysis}
+# 1. Laad de benodigde bibliotheken
+library(tidyverse)
 
+# 2. Bereid de dataset voor: hernoem de eerste kolom naar "X."
+names(BA_BronnenVanStikstof)[1] <- "X."
+
+# (Optioneel: Zorg dat je jaartallen numeriek zijn, mocht de lijn niet werken)
+# BA_BronnenVanStikstof$X. <- as.numeric(BA_BronnenVanStikstof$X.)
+
+# 3. Zet de tabel om naar het lange formaat dat jouw ggplot verwacht
+BA_BronnenVanStikstof_long <- BA_BronnenVanStikstof %>%
+  pivot_longer(
+    cols = -X., 
+    names_to = "Bron", 
+    values_to = "Uitstoot"
+  ) %>%
+  # BELANGRIJK: Filter de "Totaal"-kolom eruit zodat deze de grafiek niet vertekent
+  filter(Bron != "Totaal")
+
+
+# 4. Maak de plot
+ggplot(BA_BronnenVanStikstof_long,
+       aes(x = X.,                                    # <--- Werkt nu met de jaren uit je CSV
+           y = Uitstoot, 
+           fill = Bron)) +
+  geom_area(color = "white", linewidth = 0.2) +       # <--- Creëert de witte scheidingslijntjes
+  
+  # --- NIEUW: De dikke verticale lijn voor 2014 ---
+  geom_vline(xintercept = 2014, 
+             color = "darkred", 
+             linewidth = 1.5, 
+             linetype = "dashed") + 
+  # ------------------------------------------------
+  
+  scale_fill_brewer(palette = "Set3") +
+  labs(                                               # <--- Namen op de assen en titels
+    title = "Nitrogen emissions per source",  
+    x = "Years",
+    y = "Emissions",
+    fill = "Sources"
+  ) +
+  theme_bw() +                                        # <--- Grijze rasterlijnen inschakelen
+  theme(
+    panel.grid.major = element_line(color = "grey80"),
+    panel.grid.minor = element_line(color = "grey90"),
+    plot.title = element_text(hjust = 0.5, face = "bold")
+  )# 1. Laad de benodigde bibliotheken
+library(tidyverse)
+
+# 2. Bereid de dataset voor: hernoem de eerste kolom naar "X."
+names(BA_BronnenVanStikstof)[1] <- "X."
+
+# (Optioneel: Zorg dat je jaartallen numeriek zijn, mocht de lijn niet werken)
+# BA_BronnenVanStikstof$X. <- as.numeric(BA_BronnenVanStikstof$X.)
+
+# 3. Zet de tabel om naar het lange formaat dat jouw ggplot verwacht
+BA_BronnenVanStikstof_long <- BA_BronnenVanStikstof %>%
+  pivot_longer(
+    cols = -X., 
+    names_to = "Bron", 
+    values_to = "Uitstoot"
+  ) %>%
+  # BELANGRIJK: Filter de "Totaal"-kolom eruit zodat deze de grafiek niet vertekent
+  filter(Bron != "Totaal")
+
+
+# 4. Maak de plot
+ggplot(BA_BronnenVanStikstof_long,
+       aes(x = X.,                                    # <--- Werkt nu met de jaren uit je CSV
+           y = Uitstoot, 
+           fill = Bron)) +
+  geom_area(color = "white", linewidth = 0.2) +       # <--- Creëert de witte scheidingslijntjes
+  
+  # --- NIEUW: De dikke verticale lijn voor 2014 ---
+  geom_vline(xintercept = 2014, 
+             color = "darkred", 
+             linewidth = 1.5, 
+             linetype = "dashed") + 
+  # ------------------------------------------------
+  
+  scale_fill_brewer(palette = "Set3") +
+  labs(                                               # <--- Namen op de assen en titels
+    title = "Nitrogen emissions per source",  
+    x = "Years",
+    y = "Emissions",
+    fill = "Sources"
+  ) +
+  theme_bw() +                                        # <--- Grijze rasterlijnen inschakelen
+  theme(
+    panel.grid.major = element_line(color = "grey80"),
+    panel.grid.minor = element_line(color = "grey90"),
+    plot.title = element_text(hjust = 0.5, face = "bold")
+  )
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
