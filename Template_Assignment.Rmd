@@ -13,8 +13,8 @@ output: pdf_document
 # install.packages("rmarkdown")
 # install.packages("dplyr")
 # install.packages("ggplot2")
-# install.packages("sf")                    
-# install.packages("rnaturalearth")         
+# install.packages("sf")                    Nog te installeren!!!
+# install.packages("rnaturalearth")         Nog te installeren!!!
 ```
 
 ```{r packages}
@@ -204,7 +204,6 @@ Fijnstof_Met_Locaties <- Fijnstof_Met_Locaties %>%
   )
 ```
 
-
 2 datasets naast elkaar gezet, en dat per jaar vergeleken, dataset fijnstof gaat tot 2024 en dataset stikstof gaat tot 2023, daar moest ik nog een aanpassing in maken.
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
@@ -233,6 +232,20 @@ totale_data <- merge(
   BB_Stikstof_Totaal,
   by = "Jaar"
 )
+```
+
+```{r}
+# Maak eerst de basisregio-dataset aan (als je dat nog niet had gedaan)
+randstad_plaatsen <- c("Amsterdam", "Rotterdam", "Den Haag", "Utrecht", 
+                       "Haarlem", "Zaanstad", "Leiden", "Dordrecht", 
+                       "Almere", "Amersfoort", "Delft", "Schiedam")
+
+Fijnstof_Regio <- Fijnstof_Met_Locaties %>%
+  mutate(Regio = if_else(Plaatsnaam %in% randstad_plaatsen, "Randstad", "Niet-Randstad"))
+
+# --- HIER SPLITSEN WE ZE IN TWEE LOSSE DATASETS ---
+Fijnstof_Randstad      <- Fijnstof_Regio %>% filter(Regio == "Randstad")
+Fijnstof_Niet_Randstad <- Fijnstof_Regio %>% filter(Regio == "Niet-Randstad")
 ```
 
 ## 3.3 Create line graphs
@@ -337,7 +350,7 @@ ggplot(AA_BronnenVanFijnstof_long,
   geom_area(color = "white", linewidth = 0.2) +       # <--- Creëert de witte scheidingslijntjes
   scale_fill_brewer(palette = "Set3") +
   labs(                                               # <--- Namen op de assen en titels
-    title = "Nitrogen emissions per source",    
+    title = "Particulate matter emissions per source",    
     x = "Years",
     y = "Emissions",
     fill = "Sources"
@@ -352,7 +365,7 @@ ggplot(AA_BronnenVanFijnstof_long,
 
 ## 3.4 Creating a heatmap
 
-```{r visualise_map}
+```{r visualise_map, echo=FALSE}
 # 1. Installeer de kaart-bibliotheek als je die nog niet hebt
 # install.packages("rnaturalearthdata")
 
@@ -423,19 +436,65 @@ Here you provide a description of why the plot above is relevant to your specifi
 
 What is the poverty rate by state?
 
+###Creating a boxplot of the cities within the Randstad
+
 ```{r visualise_subpopulations}
-dataset$inmetro <- dataset$inmetro %>% as.factor()
-# Boxplot of poverty rate by state using the 'midwest' dataset
-ggplot(dataset, aes(x = inmetro, y = percadultpoverty)) +
-  geom_boxplot() +
+library(tidyverse)
+
+ggplot(data = Fijnstof_Randstad, aes(y = as.numeric(`X2025`))) +
+  # 1. Teken de boxplot (we geven hem een mooi kleurtje en maken hem iets smaller)
+  geom_boxplot(fill = "lightgreen", color = "darkgreen", width = 0.5, alpha = 0.7,
+               outlier.color = "red", outlier.shape = 16, outlier.size = 2) +
+  
+  # 2. Voeg alle individuele meetstations toe als stipjes om de verdeling te zien
+  geom_jitter(aes(x = 0), width = 0.1, alpha = 0.4, color = "grey30") +
+  
+  # 3. Titels en labels aanpassen
   labs(
-    title = "Distribution of Poverty Rates by Metropolitan status (Midwest counties)",
-    x = "Metropolitan Area",
-    y = "Poverty Rate of Adults (%)"
+    title = "Spreiding Fijnstofconcentratie in Nederland (2025)",
+    subtitle = "Elk stipje is een individueel meetstation",
+    y = "PM2.5 Waarde (µg/m³)",
+    x = "" # De X-as laten we leeg omdat we heel Nederland bekijken
   ) +
+  
+  # 4. De lay-out strak maken en de onnodige getallen op de X-as weghalen
   theme_minimal() +
   theme(
-    legend.position = "right"
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5)
+  )
+```
+
+###Creating a boxplot of the cities outside of the Randstad
+
+```{r visualise_subpopulations}
+library(tidyverse)
+
+ggplot(data = Fijnstof_Niet_Randstad, aes(y = as.numeric(`X2025`))) +
+  # 1. Teken de boxplot (we geven hem een mooi kleurtje en maken hem iets smaller)
+  geom_boxplot(fill = "lightgreen", color = "darkgreen", width = 0.5, alpha = 0.7,
+               outlier.color = "red", outlier.shape = 16, outlier.size = 2) +
+  
+  # 2. Voeg alle individuele meetstations toe als stipjes om de verdeling te zien
+  geom_jitter(aes(x = 0), width = 0.1, alpha = 0.4, color = "grey30") +
+  
+  # 3. Titels en labels aanpassen
+  labs(
+    title = "Spreiding Fijnstofconcentratie in Nederland (2025)",
+    subtitle = "Elk stipje is een individueel meetstation",
+    y = "PM2.5 Waarde (µg/m³)",
+    x = "" # De X-as laten we leeg omdat we heel Nederland bekijken
+  ) +
+  
+  # 4. De lay-out strak maken en de onnodige getallen op de X-as weghalen
+  theme_minimal() +
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5)
   )
 ```
 
@@ -446,99 +505,7 @@ Here you provide a description of why the plot above is relevant to your specifi
 Analyze the relationship between two variables.
 
 ```{r analysis}
-# 1. Laad de benodigde bibliotheken
-library(tidyverse)
 
-# 2. Bereid de dataset voor: hernoem de eerste kolom naar "X."
-names(BA_BronnenVanStikstof)[1] <- "X."
-
-# (Optioneel: Zorg dat je jaartallen numeriek zijn, mocht de lijn niet werken)
-# BA_BronnenVanStikstof$X. <- as.numeric(BA_BronnenVanStikstof$X.)
-
-# 3. Zet de tabel om naar het lange formaat dat jouw ggplot verwacht
-BA_BronnenVanStikstof_long <- BA_BronnenVanStikstof %>%
-  pivot_longer(
-    cols = -X., 
-    names_to = "Bron", 
-    values_to = "Uitstoot"
-  ) %>%
-  # BELANGRIJK: Filter de "Totaal"-kolom eruit zodat deze de grafiek niet vertekent
-  filter(Bron != "Totaal")
-
-
-# 4. Maak de plot
-ggplot(BA_BronnenVanStikstof_long,
-       aes(x = X.,                                    # <--- Werkt nu met de jaren uit je CSV
-           y = Uitstoot, 
-           fill = Bron)) +
-  geom_area(color = "white", linewidth = 0.2) +       # <--- Creëert de witte scheidingslijntjes
-  
-  # --- NIEUW: De dikke verticale lijn voor 2014 ---
-  geom_vline(xintercept = 2014, 
-             color = "darkred", 
-             linewidth = 1.5, 
-             linetype = "dashed") + 
-  # ------------------------------------------------
-  
-  scale_fill_brewer(palette = "Set3") +
-  labs(                                               # <--- Namen op de assen en titels
-    title = "Nitrogen emissions per source",  
-    x = "Years",
-    y = "Emissions",
-    fill = "Sources"
-  ) +
-  theme_bw() +                                        # <--- Grijze rasterlijnen inschakelen
-  theme(
-    panel.grid.major = element_line(color = "grey80"),
-    panel.grid.minor = element_line(color = "grey90"),
-    plot.title = element_text(hjust = 0.5, face = "bold")
-  )# 1. Laad de benodigde bibliotheken
-library(tidyverse)
-
-# 2. Bereid de dataset voor: hernoem de eerste kolom naar "X."
-names(BA_BronnenVanStikstof)[1] <- "X."
-
-# (Optioneel: Zorg dat je jaartallen numeriek zijn, mocht de lijn niet werken)
-# BA_BronnenVanStikstof$X. <- as.numeric(BA_BronnenVanStikstof$X.)
-
-# 3. Zet de tabel om naar het lange formaat dat jouw ggplot verwacht
-BA_BronnenVanStikstof_long <- BA_BronnenVanStikstof %>%
-  pivot_longer(
-    cols = -X., 
-    names_to = "Bron", 
-    values_to = "Uitstoot"
-  ) %>%
-  # BELANGRIJK: Filter de "Totaal"-kolom eruit zodat deze de grafiek niet vertekent
-  filter(Bron != "Totaal")
-
-
-# 4. Maak de plot
-ggplot(BA_BronnenVanStikstof_long,
-       aes(x = X.,                                    # <--- Werkt nu met de jaren uit je CSV
-           y = Uitstoot, 
-           fill = Bron)) +
-  geom_area(color = "white", linewidth = 0.2) +       # <--- Creëert de witte scheidingslijntjes
-  
-  # --- NIEUW: De dikke verticale lijn voor 2014 ---
-  geom_vline(xintercept = 2014, 
-             color = "darkred", 
-             linewidth = 1.5, 
-             linetype = "dashed") + 
-  # ------------------------------------------------
-  
-  scale_fill_brewer(palette = "Set3") +
-  labs(                                               # <--- Namen op de assen en titels
-    title = "Nitrogen emissions per source",  
-    x = "Years",
-    y = "Emissions",
-    fill = "Sources"
-  ) +
-  theme_bw() +                                        # <--- Grijze rasterlijnen inschakelen
-  theme(
-    panel.grid.major = element_line(color = "grey80"),
-    panel.grid.minor = element_line(color = "grey90"),
-    plot.title = element_text(hjust = 0.5, face = "bold")
-  )
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
