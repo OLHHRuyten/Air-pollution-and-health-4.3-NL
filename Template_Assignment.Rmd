@@ -13,7 +13,8 @@ output: pdf_document
 # install.packages("rmarkdown")
 # install.packages("dplyr")
 # install.packages("ggplot2")
-
+# install.packages("sf")                    Nog te installeren!!!
+# install.packages("rnaturalearth")         Nog te installeren!!!
 ```
 
 ```{r packages}
@@ -21,6 +22,7 @@ require(tidyverse)
 require(rmarkdown)
 require(yaml)
 library(dplyr)
+library(systemfonts)
 ```
 
 # Title Page
@@ -56,15 +58,19 @@ PolutionInGeneral<- read.csv("data/Polution in general.csv")
 BA_BronnenVanStikstof <- read.csv("data/Bronnen van stikstof.csv")
 AA_BronnenVanFijnstof <- read.csv("data/Bronnen van Fijnstof.csv")
 JaargemiddeldeFijnstof <- read.csv("data/Jaargemiddelde PM10 per Locatie 2015-2025.csv", sep = ";")
+Meetlocaties <- read.csv("data/luchtmeetnet_meetlocaties.csv")
+
 
 saveRDS(PolutionInGeneral, "data/PolutionInGeneral.rds")
-PolutionInGeneral < readRDS("data/PolutionInGeneral.rds")
+PolutionInGeneral <- readRDS("data/PolutionInGeneral.rds")
 saveRDS(BA_BronnenVanStikstof, "data/BA_BronnenVanStikstof.rds")
 BA_BronnenVanStikstof <- readRDS("data/BA_BronnenVanStikstof.rds")
 saveRDS(AA_BronnenVanFijnstof, "data/AA_BronnenVanFijnstof.rds")
 AA_BronnenVanFijnstof <- readRDS("data/AA_BronnenVanFijnstof.rds")
 saveRDS(JaargemiddeldeFijnstof, "data/JaargemiddeldeFijnstof.rds")
 JaargemiddeldeFijnstof <- readRDS("data/JaargemiddeldeFijnstof.rds")
+saveRDS(Meetlocaties, "data/Meetlocaties.rds")
+Meetlocaties <- readRDS("data/Meetlocaties.rds")
 ```
 
 ## 2.2 Provide a short summary of the dataset(s)
@@ -132,13 +138,79 @@ BA_BronnenVanStikstof <- BA_BronnenVanStikstof %>%
 BA_BronnenVanStikstof$Totaal <- BA_BronnenVanStikstof$Landbouw..bosbouw.en.visserij..mln.kg.+ BA_BronnenVanStikstof$Particuliere.huishoudens..mln.kg.+ BA_BronnenVanStikstof$Energiesector..mln.kg.+ BA_BronnenVanStikstof$Industrie.en.afval..mln.kg.+ BA_BronnenVanStikstof$Vervoer..mln.kg.+ BA_BronnenVanStikstof$Diensten..water.en.bouw..mln.kg.
 ```
 
+### Cleans the Meetlocaties dataset by splitting all data into separate columns and removing the first four rows.
+
+```{r}
+# We overschrijven 'Meetlocaties' direct zodat de oude versie verdwijnt
+Meetlocaties <- Meetlocaties %>%
+  # 1. Haal de rijen met een '#' direct weg
+  filter(!str_starts(.[[1]], "#")) %>%
+  
+  # 2. Splits direct op de puntkomma's naar losse kolommen
+  separate_wider_delim(
+    cols = 1, 
+    delim = ";", 
+    names = c("meetlocatie_id", "bron_id", "meetlocatie_naam", 
+              "meetlocatie_plaatsnaam", "breedtegraad", "lengtegraad", 
+              "hoogte", "meetlocatie_begindatumtijd", "meetlocatie_einddatumtijd")
+  )
+```
+
+### Puts Meetlocaties & JaargemiddeldeFijnstof together the data gets a clear location
+
+```{r}
+library(tidyverse)
+
+# 1. Zorg dat de koppelnaam in JaargemiddeldeFijnstof exact matcht
+names(JaargemiddeldeFijnstof)[1] <- "meetlocatie_id"
+
+# 2. Voer de koppeling uit en pak flexibel alle kolommen mee
+Fijnstof_Met_Locaties <- JaargemiddeldeFijnstof %>%
+  # Koppel de schone Meetlocaties tabel eraan vast
+  left_join(Meetlocaties, by = "meetlocatie_id") %>%
+  
+  # De nieuwe indeling: we zetten de handige kolommen vooraan, 
+  # en met 'everything()' komen ALLE overige kolommen (de jaren) er automatisch achteraan!
+  select(
+    Plaatsnaam = meetlocatie_plaatsnaam,
+    Breedtegraad = breedtegraad,
+    Lengtegraad = lengtegraad,
+    everything(),          # Neemt automatisch alle overige kolommen/jaren mee
+    -meetlocatie_id,       # Haalt de oude NL-code netjes weg
+    -bron_id,              # Ruimt direct overbodige kolommen uit Meetlocaties op
+    -meetlocatie_naam,
+    -hoogte,
+    -meetlocatie_begindatumtijd,
+    -meetlocatie_einddatumtijd
+  )
+```
+
+### Makes Fijnstof_Met_Locaties numeric
+
+```{r}
+Fijnstof_Met_Locaties <- Fijnstof_Met_Locaties %>%
+  mutate(
+    # 1. Coördinaten omzetten naar numeriek
+    Breedtegraad = as.numeric(Breedtegraad),
+    Lengtegraad = as.numeric(Lengtegraad)
+  ) %>%
+  mutate(
+    # 2. Alle jaarkolommen (die beginnen met X en daarna 4 cijfers) in één keer opschonen.
+    # Dit haalt de sterretjes, spaties en streepjes weg en maakt er getallen van.
+    across(
+      .cols = matches("^X\\d{4}$"), 
+      .fns = ~ as.numeric(str_replace_all(.x, "([*]|\\s|-)", ""))
+    )
+  )
+```
+
+
 2 datasets naast elkaar gezet, en dat per jaar vergeleken, dataset fijnstof gaat tot 2024 en dataset stikstof gaat tot 2023, daar moest ik nog een aanpassing in maken.
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
 
 ## 3.2 Generate necessary variables
 
-Variable 1
 ### Creates total variables
 
 ```{r}
@@ -161,11 +233,9 @@ totale_data <- merge(
   BB_Stikstof_Totaal,
   by = "Jaar"
 )
-
-totale_data
 ```
 
-## 3.3 Visualize temporal variation
+## 3.3 Create line graphs
 
 ### Simple graph about the general emission of particulate matter (fijnstof)
 
@@ -199,9 +269,10 @@ ggplot(BA_BronnenVanStikstof, aes(x = X., y = Totaal)) +
   theme_minimal()
 ```
 
-### Complicated and extensive graph of the nitrogen emissions
+### Detailed and Multifaceted Map of Nitrogen Emission Origins
 
 ```{r}
+
 # 1. Laad de benodigde bibliotheken
 library(tidyverse)
 
@@ -238,6 +309,8 @@ ggplot(BA_BronnenVanStikstof_long,
     plot.title = element_text(hjust = 0.5, face = "bold")
   )
 ```
+
+### Detailed and Multifaceted Map of Particulate matter Origins
 
 ```{r}
 # 1. Laad de benodigde bibliotheken
@@ -277,10 +350,71 @@ ggplot(AA_BronnenVanFijnstof_long,
   )
 ```
 
-## 3.4 Visualize spatial variation
+## 3.4 Creating a heatmap
 
 ```{r visualise_map}
+# 1. Installeer de kaart-bibliotheek als je die nog niet hebt
+# install.packages("rnaturalearthdata")
 
+library(tidyverse)
+library(sf)
+library(rnaturalearth)
+
+# --- STAP 1: Coördinaten omzetten naar getallen ---
+# R heeft de breedte- en lengtegraad nu als tekst ingeladen. 
+# We moeten hier eerst echte getallen van maken.
+Fijnstof_Met_Locaties <- Fijnstof_Met_Locaties %>%
+  mutate(
+    Breedtegraad = as.numeric(Breedtegraad),
+    Lengtegraad = as.numeric(Lengtegraad)
+  ) %>%
+  # We filteren locaties zonder coördinaten er even uit
+  filter(!is.na(Breedtegraad) & !is.na(Lengtegraad))
+
+
+# --- STAP 2: De basiskaart van Nederland ophalen ---
+nederland_kaart <- ne_countries(scale = "medium", country = "Netherlands", returnclass = "sf")
+
+
+# --- STAP 3: De kaart met de gekleurde stippen plotten ---
+# We kiezen hier als voorbeeld het jaar '2025' voor de intensiteit
+ggplot() +
+  # Teken eerst de ondergrond (de kaart van Nederland)
+  geom_sf(data = nederland_kaart, fill = "grey95", color = "grey70") +
+  
+  # Teken de meetpunten als stippen op de kaart
+ geom_point(data = Fijnstof_Met_Locaties, 
+             aes(x = Lengtegraad, 
+                 y = Breedtegraad, 
+                 color = as.numeric(`X2024`)), 
+             size = 8, 
+             alpha = 0.5) +           # Transparantie zodat overlappende stippen zichtbaar zijn
+  
+  coord_sf(
+    xlim = c(3.2, 7.2),   # De minimale en maximale lengtegraad van NL
+    ylim = c(50.7, 53.7), # De minimale en maximale breedtegraad van NL
+    expand = FALSE        # Zorgt ervoor dat R niet stiekem extra witruimte toevoegt
+  ) +
+  
+  # Stel de vloeiende kleurgradiënt in van Groen naar Rood
+  scale_color_gradient(low = "green4", 
+                       high = "red2", 
+                       na.value = "grey50", # Kleur als er voor dat jaar geen meting was
+                       name = "PM2.5 Value") +
+  
+  # Titels en opmaak
+  labs(
+    title = "Particulate Matter Intensity by Monitoring Location (2025)",
+    subtitle = "From green (low) to red (high)",
+    x = "longitude",
+    y = "latitude"
+    
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5)
+  )
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
