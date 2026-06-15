@@ -405,7 +405,7 @@ ggplot() +
   # Titels en opmaak
   labs(
     title = "Particulate Matter Intensity by Monitoring Location (2025)",
-    subtitle = "From green (low) to red (high))",
+    subtitle = "From green (low) to red (high)",
     x = "longitude",
     y = "latitude"
     
