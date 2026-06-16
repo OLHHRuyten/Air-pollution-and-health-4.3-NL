@@ -358,11 +358,21 @@ ggplot(AA_BronnenVanFijnstof_long,
            y = Uitstoot, 
            fill = Bron)) +
   geom_area(color = "white", linewidth = 0.2) +       # <--- Creëert de witte scheidingslijntjes
-  scale_fill_brewer(palette = "Set3") +
+  scale_fill_brewer(
+  palette = "Set3",
+  labels = c(
+    "Services, water and construction",
+    "Energy sector",
+    "Industry and waste",
+    "Agriculture, forestry and fisheries",
+    "Households",
+    "Transport"
+  )
+) +
   labs(                                               # <--- Namen op de assen en titels
     title = "Particulate matter emissions per source",    
     x = "Years",
-    y = "Emissions",
+    y = "Emissions (million kg)",
     fill = "Sources"
   ) +
   theme_bw() +                                        # <--- Grijze rasterlijnen inschakelen
