@@ -471,9 +471,9 @@ ggplot(data = Fijnstof_Randstad, aes(y = as.numeric(`X2025`))) +
   
   # 3. Titels en labels aanpassen
   labs(
-    title = "Spreiding Fijnstofconcentratie in Nederland (2025)",
-    subtitle = "Elk stipje is een individueel meetstation",
-    y = "PM2.5 Waarde (µg/m³)",
+    title = "Distribution of PM2.5 concentrations in the Netherlands (2025)",
+    subtitle = "Each point represents an individual monitoring station",
+    y = "PM2.5 concentration (µg/m³)",
     x = "" # De X-as laten we leeg omdat we heel Nederland bekijken
   ) +
   
