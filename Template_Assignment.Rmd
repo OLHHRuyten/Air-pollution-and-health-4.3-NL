@@ -542,7 +542,7 @@ ggplot(BA_BronnenVanStikstof_long,
 annotate(
   "text",
   x = 2019,
-  y = 320,
+  y = 285,
   label = "Nitrogen crisis\n2019",
   color = "darkred",
   angle = 90,
