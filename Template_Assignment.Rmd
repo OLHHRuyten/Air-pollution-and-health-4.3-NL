@@ -29,11 +29,9 @@ library(dplyr)
 library(systemfonts)
 ```
 
-# Title Page
+# Changes in nitrogen emissions in the Netherlands
 
-Changes in nitrogen emissions in the Netherlands
-
-Group project by: Naut Leuverink, Lucas Wolffenbuttel, Mike Ottervanger, Otto Ruyten, Nicolaas van Nispen en Robin Koldenhof
+Naut Leuverink, Lucas Wolffenbuttel, Mike Ottervanger, Otto Ruyten, Nicolaas van Nispen en Robin Koldenhof
 
 4.3
 
@@ -282,6 +280,7 @@ This graph shows the evolution of the emission of nitrogen over the years from 2
 
 
 ```{r echo=FALSE}
+
 library(ggplot2)
 
 ggplot(BA_BronnenVanStikstof, aes(x = X., y = Totaal)) +
@@ -298,7 +297,6 @@ ggplot(BA_BronnenVanStikstof, aes(x = X., y = Totaal)) +
 ### Detailed and Multifaceted Map of Nitrogen Emission Origins
 
 A more detailed graph displays the different sources of nitrogen emissions using distinct colors, making it easier to distinguish between the various emission sources.
-
 
 ```{r echo=FALSE}
 
@@ -479,7 +477,6 @@ library(tidyverse)
 
 # We gebruiken de gecombineerde dataset 'Fijnstof_Regio'
 ggplot(data = Fijnstof_Regio, aes(x = Regio, y = as.numeric(`X2025`), fill = Regio)) +
-  
 # 1. Teken de boxplots naast elkaar (voeg na.rm = TRUE toe)
 geom_boxplot(width = 0.5, alpha = 0.7,
              outlier.color = "red", outlier.shape = 16, outlier.size = 2,
@@ -600,6 +597,10 @@ In the graph you see that there is a strong drop in nitrogen emissions across mu
 # Part 4 - Discussion
 
 ## 4.1 Discuss your findings
+
+The comparative boxplots show that the median level of fine particulate matter emissions is higher in the Randstad region than in non-Randstad areas. This pattern is also reflected in the map visualization, where a high concentration of red dots can be observed within the Randstad.
+
+Furthermore, the data indicate that fine particulate matter emissions have decreased since 2005. This downward trend is visible across all of our graphs and can also be observed in the map visualization when the displayed year is adjusted in the code.
 
 # Part 5 - Reproducibility
 
