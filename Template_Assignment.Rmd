@@ -13,9 +13,9 @@ output: pdf_document
 # install.packages("rmarkdown")
 # install.packages("dplyr")
 # install.packages("ggplot2")
-# install.packages("sf")                    Nog te installeren!!!
-# install.packages("rnaturalearth")         Nog te installeren!!!
- install.packages("cbsodataR")           #  Nog te installeren!!!
+# install.packages("sf")                    # Nog te installeren!!!
+# install.packages("rnaturalearth")         # Nog te installeren!!!
+# yeinstall.packages("cbsodataR")           #  Nog te installeren!!!
 ```
 
 ```{r packages}
@@ -453,29 +453,6 @@ ggplot() +
   )
 ```
 
-```{r}
-
-library(ggplot2)
-library(sf)
-library(cbsodataR)
-
-# 1. Download de gedetailleerde gemeentekaart (bijv. van meest recente jaar)
-# 'voorlopig = TRUE' zorgt ervoor dat je de nieuwste grenzen ophaalt
-gemeentekaart <- cbs_get_maps(year = 2023, resolution = "hoog")
-
-# 2. Inspecteer de kaart (bevat provincie-, gemeente- en landsdelen)
-# We filteren hier op gemeenten niveau
-gemeenten_sf <- gemeentekaart$gemeente
-
-# 3. Plot de gedetailleerde kaart
-ggplot(data = gemeenten_sf) +
-  geom_sf(fill = "snow", color = "darkgray", size = 0.1) +
-  theme_minimal() +
-  labs(
-    title = "Gedetailleerde Gemeentekaart Nederland",
-    subtitle = "Ingebruikte CBS grenzen via cbsodataR"
-  )
-```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
 
