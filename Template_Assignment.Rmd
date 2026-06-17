@@ -250,7 +250,7 @@ Fijnstof_Regio <- Fijnstof_Met_Locaties %>%
 
 # --- HIER SPLITSEN WE ZE IN TWEE LOSSE DATASETS ---
 Fijnstof_Randstad      <- Fijnstof_Regio %>% filter(Regio == "Randstad")
-Fijnstof_Niet_Randstad <- Fijnstof_Regio %>% filter(Regio == "Other_regions")
+Fijnstof_Other_regions <- Fijnstof_Regio %>% filter(Regio == "Other_regions")
 ```
 
 ## 3.3 Create line graphs
@@ -275,6 +275,9 @@ ggplot(AA_BronnenVanFijnstof, aes(x = X., y = Totaal)) +
 
 ### Simple graph about the general emission of nitrogen
 
+This graph shows the evolution of the emission of nitrogen over the years from 2005 to 2025, where you can see that the total particulate matter emissions have more than halved over the years.
+
+
 ```{r}
 library(ggplot2)
 
@@ -290,6 +293,9 @@ ggplot(BA_BronnenVanStikstof, aes(x = X., y = Totaal)) +
 ```
 
 ### Detailed and Multifaceted Map of Nitrogen Emission Origins
+
+A more detailed graph displays the different sources of nitrogen emissions using distinct colors, making it easier to distinguish between the various emission sources.
+
 
 ```{r}
 
@@ -341,6 +347,8 @@ ggplot(BA_BronnenVanStikstof_long,
 ```
 
 ### Detailed and Multifaceted Map of Particulate matter Origins
+
+A more detailed graph displays the different sources of fine particulate matter emissions using distinct colors, making it easier to distinguish between the various emission sources.
 
 ```{r}
 # 1. Laad de benodigde bibliotheken
@@ -457,7 +465,7 @@ ggplot() +
   )
 ```
 
-Here you provide a description of why the plot above is relevant to your specific social problem.
+This map displays the locations of air quality monitoring stations across the Netherlands and shows the measured concentrations of fine particulate matter in the air for the year 2025. A conventional heatmap, in which all municipalities are represented by different colors, was not feasible because data were available for only a limited number of municipalities. In addition, larger municipalities often contained multiple monitoring stations, which sometimes recorded substantially different measurements due to local environmental conditions and station-specific locations. As a result, displaying the individual monitoring stations provides a more accurate representation of the available data.
 
 ## 3.5 Visualize sub-population variation
 
@@ -480,11 +488,12 @@ geom_jitter(width = 0.15, alpha = 0.4, color = "grey30",
   
   # 3. Geef beide groepen een eigen herkenbare kleur
   scale_fill_manual(values = c("Randstad" = "coral", "Other_regions" = "skyblue")) +
-  
+ 
+  scale_x_discrete(labels = c("Niet-Randstad" = "Other regions")) + 
   # 4. Titels en labels aanpassen
   labs(
     title = "Comparison Particulate matter emissions (2025)",
-    subtitle = "Randstad versus Rest of the country",
+    subtitle = "Randstad versus other regions",
     y = "PM2.5 Value (µg/m³)",
     x = "" # De X-as laat nu netjes de categorienamen zien
   ) +
@@ -495,7 +504,9 @@ geom_jitter(width = 0.15, alpha = 0.4, color = "grey30",
     legend.position = "none", # Legenda is overbodig omdat de X-as het al vertelt
     plot.title = element_text(face = "bold", hjust = 0.5),
     plot.subtitle = element_text(hjust = 0.5)
-  )
+  ) +
+  scale_x_discrete(labels = c("Niet-Randstad" = "Other regions", "Randstad" = "Randstad"))
+
 ```
 
 By comparing the PM 2.5 particulate matter levels between the randstad boxplot and the other regions boxplot, the boxplot comparison clearly shows regional differences in Dutch air quality. This graphic directly relates to the project's main social issue, which is examining the effects of transportation, industrial infrastructure, and densely populated areas on localized pollution and public health.
