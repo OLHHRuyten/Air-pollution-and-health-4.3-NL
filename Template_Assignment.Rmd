@@ -246,11 +246,11 @@ randstad_plaatsen <- c("Amsterdam", "Rotterdam", "Den Haag", "Utrecht",
                        "Almere", "Amersfoort", "Delft", "Schiedam")
 
 Fijnstof_Regio <- Fijnstof_Met_Locaties %>%
-  mutate(Regio = if_else(Plaatsnaam %in% randstad_plaatsen, "Randstad", "Niet-Randstad"))
+  mutate(Regio = if_else(Plaatsnaam %in% randstad_plaatsen, "Randstad", "Other_regions"))
 
 # --- HIER SPLITSEN WE ZE IN TWEE LOSSE DATASETS ---
 Fijnstof_Randstad      <- Fijnstof_Regio %>% filter(Regio == "Randstad")
-Fijnstof_Niet_Randstad <- Fijnstof_Regio %>% filter(Regio == "Niet-Randstad")
+Fijnstof_Niet_Randstad <- Fijnstof_Regio %>% filter(Regio == "Other_regions")
 ```
 
 ## 3.3 Create line graphs
@@ -543,7 +543,7 @@ geom_jitter(width = 0.15, alpha = 0.4, color = "grey30",
             na.rm = TRUE) +
   
   # 3. Geef beide groepen een eigen herkenbare kleur
-  scale_fill_manual(values = c("Randstad" = "coral", "Niet-Randstad" = "skyblue")) +
+  scale_fill_manual(values = c("Randstad" = "coral", "Other_regions" = "skyblue")) +
   
   # 4. Titels en labels aanpassen
   labs(
@@ -562,7 +562,9 @@ geom_jitter(width = 0.15, alpha = 0.4, color = "grey30",
   )
 ```
 
-Here you provide a description of why the plot above is relevant to your specific social problem.
+By comparing the PM 2.5 particulate matter levels between the randstad boxplot and the other regions boxplot, the boxplot comparison clearly shows regional differences in Dutch air quality. This graphic directly relates to the project's main social issue, which is examining the effects of transportation, industrial infrastructure, and densely populated areas on localized pollution and public health.
+
+These plots demonstrate that randstad areas have a greater, more concentrated load of particle matter, even though national data indicates that industries like agriculture dominate nitrogen emissions across rural regions. The randstad boxplot's larger median PM 2.5 value highlights the unequal distribution of environmental effects and presents air pollution as a pressing public health and urban development issue.
 
 ## 3.6 Event analysis
 
