@@ -13,9 +13,9 @@ output: pdf_document
 # install.packages("rmarkdown")
 # install.packages("dplyr")
 # install.packages("ggplot2")
-# install.packages("sf")                    # Nog te installeren!!!
-# install.packages("rnaturalearth")         # Nog te installeren!!!
-# yeinstall.packages("cbsodataR")           #  Nog te installeren!!!
+# install.packages("sf")              
+# install.packages("rnaturalearth")      
+# yeinstall.packages("cbsodataR")         
 ```
 
 ```{r packages}
@@ -257,6 +257,8 @@ Fijnstof_Niet_Randstad <- Fijnstof_Regio %>% filter(Regio == "Niet-Randstad")
 
 ### Simple graph about the general emission of particulate matter (fijnstof)
 
+This graph shows the evolution of total particulate matter emissions over the years from 2005 to 2025, where you can see that the total particulate matter emissions have almost halved over the years.
+
 ```{r}
 library(ggplot2)
 
@@ -455,7 +457,6 @@ ggplot() +
   )
 ```
 
-
 Here you provide a description of why the plot above is relevant to your specific social problem.
 
 ## 3.5 Visualize sub-population variation
@@ -561,9 +562,7 @@ geom_jitter(width = 0.15, alpha = 0.4, color = "grey30",
   )
 ```
 
-By comparing the PM 2.5 particulate matter levels between the randstad boxplot and the niet-randstad boxplot, the boxplot comparison clearly shows regional differences in Dutch air quality. This graphic directly relates to the project's main social issue, which is examining the effects of transportation, industrial infrastructure, and densely populated areas on localized pollution and public health.
-
-These plots demonstrate that randstad areas have a greater, more concentrated load of particle matter, even though national data indicates that industries like agriculture dominate nitrogen emissions across rural regions. The randstad boxplot's larger median PM 2.5 value highlights the unequal distribution of environmental effects and presents air pollution as a pressing public health and urban development issue.
+Here you provide a description of why the plot above is relevant to your specific social problem.
 
 ## 3.6 Event analysis
 
@@ -639,11 +638,10 @@ annotate(
     plot.title = element_text(hjust = 0.5, face = "bold")
   )
 ```
+
 The graph shows the development of nitrogen emissions from different sources in the Netherlands between 2005 and 2024. Overall, emissions decreased substantially over the observed period, with the largest contribution consistently coming from the transport sector. Emissions from industry, the energy sector, households, agriculture, and services also show a downward trend.
 
 The vertical dashed line indicates the Dutch nitrogen crisis in 2019. After this point, emissions continued to decline across most sectors. This trend coincides with the introduction of stricter environmental measures and, shortly afterwards, the COVID-19 pandemic. However, based on this graph alone, no direct causal relationship can be established between these events and the observed decrease in emissions.
-
-
 
 In the graph you see that there is a strong drop in nitrogen emissions across multiple sources from 2019 onward. This can be explained by multiple factors, such as new more strict emissions laws by the Dutch government and also the EU. These laws include a lowering of the speed limit to 100 km/h, causing a sharp drop in vehicle emissions. The laws also include the freezing of a lot of infrastructure and other building projects causing a drop in services and industry emissions. And then from late 2019 and 2020 onward there was the COVID pandemic causing lower emissions in almost all sectors.
 
@@ -655,7 +653,7 @@ In the graph you see that there is a strong drop in nitrogen emissions across mu
 
 ## 5.1 Github repository link
 
-Provide the link to your PUBLIC repository here: ...
+Provide the link to your PUBLIC repository here: <https://github.com/OLHHRuyten/Air-pollution-and-health-4.3-NL>
 
 ## 5.2 Reference list
 
