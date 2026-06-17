@@ -7,7 +7,7 @@ output: pdf_document
 
 # Set-up your environment
 
-```{r package_install, include=FALSE}
+```{r package_install, echo=FALSE}
 # install.packages("tidyverse")
 # install.packages("yaml")
 # install.packages("rmarkdown")
@@ -15,10 +15,13 @@ output: pdf_document
 # install.packages("ggplot2")
 # install.packages("sf")              
 # install.packages("rnaturalearth")      
-# yeinstall.packages("cbsodataR")         
+# yeinstall.packages("cbsodataR")  
+#install.packages("tinytex")
+library(tinytex)
+#tinytex::install_tinytex()
 ```
 
-```{r packages}
+```{r packages, echo=FALSE}
 require(tidyverse)
 require(rmarkdown)
 require(yaml)
@@ -54,7 +57,7 @@ Include the following:
 
 Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!
 
-```{r loading_data}
+```{r loading_data, echo=FALSE}
 PolutionInGeneral<- read.csv("data/Polution in general.csv")
 BA_BronnenVanStikstof <- read.csv("data/Bronnen van stikstof.csv")
 AA_BronnenVanFijnstof <- read.csv("data/Bronnen van Fijnstof.csv")
@@ -76,29 +79,36 @@ Meetlocaties <- readRDS("data/Meetlocaties.rds")
 
 ## 2.2 Provide a short summary of the dataset(s)
 
-```{r}
+```{r echo=FALSE}
 #head(PolutionInGeneral)
 ```
 
 This dataset contains 11 variables, each representing a different year. For each year, data is provided on the levels of nitrogen, NMVOCs (non-methane volatile organic compounds), sulfur oxides, and PM2.5 particulate matter observed in the air. By analyzing this data, we can assess the severity of air pollution and identify trends in air quality over time.
 
-```{r}
+```{r echo=FALSE}
 #head(JaargemiddeldeFijnstof)
 ```
 
 These datasets show particulate matter (fine dust) levels measured at various monitoring stations across the Netherlands over the years 2005 till 2025. This provides a clear insight into the periods and regions where particulate matter causes the greatest impact and pollution.
 
-```{r}
+```{r echo=FALSE}
 #head(BA_BronnenVanStikstof)
 ```
 
 This dataset shows the sources of nitrogen measured over a time period from 2005 till 2024
 
-```{r}
+```{r echo=FALSE}
 #head(AA_BronnenVanFijnstof)
 ```
 
 This dataset shows the sources of fine dust measured over a time period from 2005 till 2024
+
+```{r}
+#head(Meetlocaties)
+```
+
+This dataset is used to find the locations of Jaargemiddelde Fijnstof so we can pin it to the correct places on the dutch map.
+
 
 ``` r
 inline_code = TRUE
@@ -116,7 +126,7 @@ Most of the datasets include a duration of time most often 2005 till 2024, and a
 
 Say we want to include only larger distances (above 2) in our dataset, we can filter for this.
 
-```{r data_cleaning}
+```{r data_cleaning, echo=FALSE}
 
 #Laatste rij was .cbs, die hebben we verwijderd
 AA_BronnenVanFijnstof<- AA_BronnenVanFijnstof [-nrow(AA_BronnenVanFijnstof),]
@@ -129,7 +139,7 @@ AA_BronnenVanFijnstof$Totaal <- AA_BronnenVanFijnstof$Landbouw..bosbouw.en.visse
 
 ```
 
-```{r}
+```{r echo=FALSE}
 BA_BronnenVanStikstof<- BA_BronnenVanStikstof [-nrow(BA_BronnenVanStikstof),]
 
 BA_BronnenVanStikstof <- BA_BronnenVanStikstof %>%
@@ -141,7 +151,7 @@ BA_BronnenVanStikstof$Totaal <- BA_BronnenVanStikstof$Landbouw..bosbouw.en.visse
 
 ### Cleans the Meetlocaties dataset by splitting all data into separate columns and removing the first four rows.
 
-```{r}
+```{r echo=FALSE}
 # We overschrijven 'Meetlocaties' direct zodat de oude versie verdwijnt
 Meetlocaties <- Meetlocaties %>%
   # 1. Haal de rijen met een '#' direct weg
@@ -159,7 +169,7 @@ Meetlocaties <- Meetlocaties %>%
 
 ### Puts Meetlocaties & JaargemiddeldeFijnstof together the data gets a clear location
 
-```{r}
+```{r echo=FALSE}
 library(tidyverse)
 
 # 1. Zorg dat de koppelnaam in JaargemiddeldeFijnstof exact matcht
@@ -188,7 +198,7 @@ Fijnstof_Met_Locaties <- JaargemiddeldeFijnstof %>%
 
 ### Makes Fijnstof_Met_Locaties numeric
 
-```{r}
+```{r echo=FALSE}
 Fijnstof_Met_Locaties <- Fijnstof_Met_Locaties %>%
   mutate(
     # 1. Coördinaten omzetten naar numeriek
@@ -213,7 +223,7 @@ Please use a separate 'R block' of code for each type of cleaning. So, e.g. one 
 
 ### Creates total variables
 
-```{r}
+```{r echo=FALSE}
 # De bestaande kolom 'Totaal' wordt gebruikt.
 # De totalen van fijnstof en stikstof worden gecombineerd op basis van het jaar.
 # Omdat stikstof tot en met 2023 loopt, loopt de gecombineerde tabel ook tot en met 2023.
@@ -237,7 +247,7 @@ totale_data <- merge(
 
 ### DIstancing data from the randstad from the Non-randstad
 
-```{r}
+```{r echo=FALSE}
 # Maak eerst de basisregio-dataset aan (als je dat nog niet had gedaan)
 randstad_plaatsen <- c("Amsterdam", "Rotterdam", "Den Haag", "Utrecht", 
                        "Haarlem", "Zaanstad", "Leiden", "Dordrecht", 
@@ -257,7 +267,7 @@ Fijnstof_Other_regions <- Fijnstof_Regio %>% filter(Regio == "Other_regions")
 
 This graph shows the evolution of total particulate matter emissions over the years from 2005 to 2025, where you can see that the total particulate matter emissions have almost halved over the years.
 
-```{r}
+```{r echo=FALSE}
 library(ggplot2)
 
 ggplot(AA_BronnenVanFijnstof, aes(x = X., y = Totaal)) +
@@ -275,7 +285,9 @@ ggplot(AA_BronnenVanFijnstof, aes(x = X., y = Totaal)) +
 
 This graph shows the evolution of the emission of nitrogen over the years from 2005 to 2025, where you can see that the total particulate matter emissions have more than halved over the years.
 
-```{r}
+
+```{r echo=FALSE}
+
 library(ggplot2)
 
 ggplot(BA_BronnenVanStikstof, aes(x = X., y = Totaal)) +
@@ -293,7 +305,7 @@ ggplot(BA_BronnenVanStikstof, aes(x = X., y = Totaal)) +
 
 A more detailed graph displays the different sources of nitrogen emissions using distinct colors, making it easier to distinguish between the various emission sources.
 
-```{r}
+```{r echo=FALSE}
 
 # 1. Laad de benodigde bibliotheken
 library(tidyverse)
@@ -346,7 +358,7 @@ ggplot(BA_BronnenVanStikstof_long,
 
 A more detailed graph displays the different sources of fine particulate matter emissions using distinct colors, making it easier to distinguish between the various emission sources.
 
-```{r}
+```{r echo=FALSE}
 # 1. Laad de benodigde bibliotheken
 library(tidyverse)
 
@@ -467,12 +479,11 @@ This map displays the locations of air quality monitoring stations across the Ne
 
 ### A boxplot that combines the randstad and the rest
 
-```{r}
+```{r echo=FALSE}
 library(tidyverse)
 
 # We gebruiken de gecombineerde dataset 'Fijnstof_Regio'
 ggplot(data = Fijnstof_Regio, aes(x = Regio, y = as.numeric(`X2025`), fill = Regio)) +
-  
 # 1. Teken de boxplots naast elkaar (voeg na.rm = TRUE toe)
 geom_boxplot(width = 0.5, alpha = 0.7,
              outlier.color = "red", outlier.shape = 16, outlier.size = 2,
@@ -513,7 +524,7 @@ These plots demonstrate that randstad areas have a greater, more concentrated lo
 
 Analyze the relationship between two variables.
 
-```{r analysis}
+```{r analysis, echo=FALSE}
 # 1. Laad de benodigde bibliotheken
 library(tidyverse)
 
