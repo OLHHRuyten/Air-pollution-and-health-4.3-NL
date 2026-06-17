@@ -15,6 +15,7 @@ output: pdf_document
 # install.packages("ggplot2")
 # install.packages("sf")                    Nog te installeren!!!
 # install.packages("rnaturalearth")         Nog te installeren!!!
+ install.packages("cbsodataR")           #  Nog te installeren!!!
 ```
 
 ```{r packages}
@@ -234,6 +235,8 @@ totale_data <- merge(
 )
 ```
 
+### DIstancing data from the randstad from the Non-randstad
+
 ```{r}
 # Maak eerst de basisregio-dataset aan (als je dat nog niet had gedaan)
 randstad_plaatsen <- c("Amsterdam", "Rotterdam", "Den Haag", "Utrecht", 
@@ -399,9 +402,9 @@ ggplot() +
  geom_point(data = Fijnstof_Met_Locaties, 
              aes(x = Lengtegraad, 
                  y = Breedtegraad, 
-                 color = as.numeric(`X2024`)), 
-             size = 8, 
-             alpha = 0.5) +           # Transparantie zodat overlappende stippen zichtbaar zijn
+                 color = as.numeric(`X2025`)), 
+             size = 2.5, 
+             alpha = 0.7) +           # Transparantie zodat overlappende stippen zichtbaar zijn
   
   coord_sf(
     xlim = c(3.2, 7.2),   # De minimale en maximale lengtegraad van NL
@@ -427,6 +430,30 @@ ggplot() +
   theme(
     plot.title = element_text(face = "bold", hjust = 0.5),
     plot.subtitle = element_text(hjust = 0.5)
+  )
+```
+
+```{r}
+
+library(ggplot2)
+library(sf)
+library(cbsodataR)
+
+# 1. Download de gedetailleerde gemeentekaart (bijv. van meest recente jaar)
+# 'voorlopig = TRUE' zorgt ervoor dat je de nieuwste grenzen ophaalt
+gemeentekaart <- cbs_get_maps(year = 2023, resolution = "hoog")
+
+# 2. Inspecteer de kaart (bevat provincie-, gemeente- en landsdelen)
+# We filteren hier op gemeenten niveau
+gemeenten_sf <- gemeentekaart$gemeente
+
+# 3. Plot de gedetailleerde kaart
+ggplot(data = gemeenten_sf) +
+  geom_sf(fill = "snow", color = "darkgray", size = 0.1) +
+  theme_minimal() +
+  labs(
+    title = "Gedetailleerde Gemeentekaart Nederland",
+    subtitle = "Ingebruikte CBS grenzen via cbsodataR"
   )
 ```
 
@@ -480,7 +507,7 @@ ggplot(data = Fijnstof_Niet_Randstad, aes(y = as.numeric(`X2025`))) +
   # 2. Voeg alle individuele meetstations toe als stipjes om de verdeling te zien
   geom_jitter(aes(x = 0), width = 0.1, alpha = 0.4, color = "grey30") +
   
-  # 3. Titels en labels aanpassen
+  # 3. Titels en labels aanpassen 
   labs(
     title = "Spreiding Fijnstofconcentratie in Nederland (2025)",
     subtitle = "Elk stipje is een individueel meetstation",
@@ -493,6 +520,41 @@ ggplot(data = Fijnstof_Niet_Randstad, aes(y = as.numeric(`X2025`))) +
   theme(
     axis.text.x = element_blank(),
     axis.ticks.x = element_blank(),
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5)
+  )
+```
+
+### A boxplot that combines the randstad and the rest
+
+```{r}
+library(tidyverse)
+
+# We gebruiken de gecombineerde dataset 'Fijnstof_Regio'
+ggplot(data = Fijnstof_Regio, aes(x = Regio, y = as.numeric(`X2025`), fill = Regio)) +
+  
+  # 1. Teken de boxplots naast elkaar
+  geom_boxplot(width = 0.5, alpha = 0.7,
+               outlier.color = "red", outlier.shape = 16, outlier.size = 2) +
+  
+  # 2. Voeg de individuele meetstations als stipjes toe over de juiste boxplot
+  geom_jitter(width = 0.15, alpha = 0.4, color = "grey30") +
+  
+  # 3. Geef beide groepen een eigen herkenbare kleur
+  scale_fill_manual(values = c("Randstad" = "coral", "Niet-Randstad" = "skyblue")) +
+  
+  # 4. Titels en labels aanpassen
+  labs(
+    title = "Comparison Particulate matter emissions (2025)",
+    subtitle = "Randstad versus Rest of the country",
+    y = "PM2.5 Value (µg/m³)",
+    x = "" # De X-as laat nu netjes de categorienamen zien
+  ) +
+  
+  # 5. De lay-out strak maken (de labels op de X-as laten we nu wél staan!)
+  theme_minimal() +
+  theme(
+    legend.position = "none", # Legenda is overbodig omdat de X-as het al vertelt
     plot.title = element_text(face = "bold", hjust = 0.5),
     plot.subtitle = element_text(hjust = 0.5)
   )
