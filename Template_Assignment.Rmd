@@ -28,7 +28,9 @@ library(systemfonts)
 
 # Title Page
 
-Naut Leuverink, Lucas Wolffenbuttel, Mike Ottervanger, Otto Ruyten, Nicolaas van Nispen en Robin Koldenhof
+Changes in nitrogen emissions in the Netherlands
+
+Group project by: Naut Leuverink, Lucas Wolffenbuttel, Mike Ottervanger, Otto Ruyten, Nicolaas van Nispen en Robin Koldenhof
 
 4.3
 
