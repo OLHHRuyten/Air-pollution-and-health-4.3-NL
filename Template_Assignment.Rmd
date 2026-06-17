@@ -102,6 +102,13 @@ This dataset shows the sources of nitrogen measured over a time period from 2005
 
 This dataset shows the sources of fine dust measured over a time period from 2005 till 2024
 
+```{r}
+#head(Meetlocaties)
+```
+
+This dataset is used to find the locations of Jaargemiddelde Fijnstof so we can pin it to the correct places on the dutch map.
+
+
 ``` r
 inline_code = TRUE
 ```
