@@ -548,7 +548,7 @@ geom_jitter(width = 0.15, alpha = 0.4, color = "grey30",
   # 4. Titels en labels aanpassen
   labs(
     title = "Comparison Particulate matter emissions (2025)",
-    subtitle = "Randstad versus Rest of the country",
+    subtitle = "Randstad versus other regions",
     y = "PM2.5 Value (µg/m³)",
     x = "" # De X-as laat nu netjes de categorienamen zien
   ) +
