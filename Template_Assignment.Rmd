@@ -250,7 +250,7 @@ Fijnstof_Regio <- Fijnstof_Met_Locaties %>%
 
 # --- HIER SPLITSEN WE ZE IN TWEE LOSSE DATASETS ---
 Fijnstof_Randstad      <- Fijnstof_Regio %>% filter(Regio == "Randstad")
-Fijnstof_Niet_Randstad <- Fijnstof_Regio %>% filter(Regio == "Other_regions")
+Fijnstof_Other_regions <- Fijnstof_Regio %>% filter(Regio == "Other_regions")
 ```
 
 ## 3.3 Create line graphs
