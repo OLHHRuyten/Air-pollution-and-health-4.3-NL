@@ -1,7 +1,7 @@
 ---
-title: "Template"
-author: "Studentnames and studentnumbers here"
-date: "`r Sys.Date()`"
+title: "Changes in nitrogen emissions in the Netherlands"
+author: "Mike Ottervanger (2785946), Lucas Wolffenbuttel (2898864), Otto Ruyten (2893051, "
+date: "17 June 2026"
 output: pdf_document
 ---
 
