@@ -273,6 +273,8 @@ ggplot(AA_BronnenVanFijnstof, aes(x = X., y = Totaal)) +
 
 ### Simple graph about the general emission of nitrogen
 
+This graph shows the evolution of the emission of nitrogen over the years from 2005 to 2025, where you can see that the total particulate matter emissions have more than halved over the years.
+
 ```{r}
 library(ggplot2)
 
@@ -288,6 +290,8 @@ ggplot(BA_BronnenVanStikstof, aes(x = X., y = Totaal)) +
 ```
 
 ### Detailed and Multifaceted Map of Nitrogen Emission Origins
+
+A more detailed graph displays the different sources of nitrogen emissions using distinct colors, making it easier to distinguish between the various emission sources.
 
 ```{r}
 
@@ -339,6 +343,8 @@ ggplot(BA_BronnenVanStikstof_long,
 ```
 
 ### Detailed and Multifaceted Map of Particulate matter Origins
+
+A more detailed graph displays the different sources of fine particulate matter emissions using distinct colors, making it easier to distinguish between the various emission sources.
 
 ```{r}
 # 1. Laad de benodigde bibliotheken
@@ -455,7 +461,7 @@ ggplot() +
   )
 ```
 
-Here you provide a description of why the plot above is relevant to your specific social problem.
+This map displays the locations of air quality monitoring stations across the Netherlands and shows the measured concentrations of fine particulate matter in the air for the year 2025. A conventional heatmap, in which all municipalities are represented by different colors, was not feasible because data were available for only a limited number of municipalities. In addition, larger municipalities often contained multiple monitoring stations, which sometimes recorded substantially different measurements due to local environmental conditions and station-specific locations. As a result, displaying the individual monitoring stations provides a more accurate representation of the available data.
 
 ## 3.5 Visualize sub-population variation
 
@@ -478,7 +484,8 @@ geom_jitter(width = 0.15, alpha = 0.4, color = "grey30",
   
   # 3. Geef beide groepen een eigen herkenbare kleur
   scale_fill_manual(values = c("Randstad" = "coral", "Other_regions" = "skyblue")) +
-  
+ 
+  scale_x_discrete(labels = c("Niet-Randstad" = "Other regions")) + 
   # 4. Titels en labels aanpassen
   labs(
     title = "Comparison Particulate matter emissions (2025)",
@@ -586,6 +593,10 @@ In the graph you see that there is a strong drop in nitrogen emissions across mu
 # Part 4 - Discussion
 
 ## 4.1 Discuss your findings
+
+The comparative boxplots show that the median level of fine particulate matter emissions is higher in the Randstad region than in non-Randstad areas. This pattern is also reflected in the map visualization, where a high concentration of red dots can be observed within the Randstad.
+
+Furthermore, the data indicate that fine particulate matter emissions have decreased since 2005. This downward trend is visible across all of our graphs and can also be observed in the map visualization when the displayed year is adjusted in the code.
 
 # Part 5 - Reproducibility
 
