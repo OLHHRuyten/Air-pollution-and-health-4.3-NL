@@ -235,7 +235,7 @@ totale_data <- merge(
 )
 ```
 
-### DIstancing data from the randstad from the Non-randstad
+### Distancing data from the randstad from the Non-randstad
 
 ```{r}
 # Maak eerst de basisregio-dataset aan (als je dat nog niet had gedaan)
@@ -453,30 +453,6 @@ ggplot() +
   )
 ```
 
-```{r}
-
-library(ggplot2)
-library(sf)
-library(cbsodataR)
-
-# 1. Download de gedetailleerde gemeentekaart (bijv. van meest recente jaar)
-# 'voorlopig = TRUE' zorgt ervoor dat je de nieuwste grenzen ophaalt
-gemeentekaart <- cbs_get_maps(year = 2023, resolution = "hoog")
-
-# 2. Inspecteer de kaart (bevat provincie-, gemeente- en landsdelen)
-# We filteren hier op gemeenten niveau
-gemeenten_sf <- gemeentekaart$gemeente
-
-# 3. Plot de gedetailleerde kaart
-ggplot(data = gemeenten_sf) +
-  geom_sf(fill = "snow", color = "darkgray", size = 0.1) +
-  theme_minimal() +
-  labs(
-    title = "Gedetailleerde Gemeentekaart Nederland",
-    subtitle = "Ingebruikte CBS grenzen via cbsodataR"
-  )
-```
-
 Here you provide a description of why the plot above is relevant to your specific social problem.
 
 ## 3.5 Visualize sub-population variation
@@ -656,11 +632,10 @@ annotate(
     plot.title = element_text(hjust = 0.5, face = "bold")
   )
 ```
+
 The graph shows the development of nitrogen emissions from different sources in the Netherlands between 2005 and 2024. Overall, emissions decreased substantially over the observed period, with the largest contribution consistently coming from the transport sector. Emissions from industry, the energy sector, households, agriculture, and services also show a downward trend.
 
 The vertical dashed line indicates the Dutch nitrogen crisis in 2019. After this point, emissions continued to decline across most sectors. This trend coincides with the introduction of stricter environmental measures and, shortly afterwards, the COVID-19 pandemic. However, based on this graph alone, no direct causal relationship can be established between these events and the observed decrease in emissions.
-
-
 
 In the graph you see that there is a strong drop in nitrogen emissions across multiple sources from 2019 onward. This can be explained by multiple factors, such as new more strict emissions laws by the Dutch government and also the EU. These laws include a lowering of the speed limit to 100 km/h, causing a sharp drop in vehicle emissions. The laws also include the freezing of a lot of infrastructure and other building projects causing a drop in services and industry emissions. And then from late 2019 and 2020 onward there was the COVID pandemic causing lower emissions in almost all sectors.
 
@@ -668,11 +643,15 @@ In the graph you see that there is a strong drop in nitrogen emissions across mu
 
 ## 4.1 Discuss your findings
 
+The comparative boxplots show that the median level of fine particulate matter emissions is higher in the Randstad region than in non-Randstad areas. This pattern is also reflected in the map visualization, where a high concentration of red dots can be observed within the Randstad.
+
+Furthermore, the data indicate that fine particulate matter emissions have decreased since 2005. This downward trend is visible across all of our graphs and can also be observed in the map visualization when the displayed year is adjusted in the code.
+
 # Part 5 - Reproducibility
 
 ## 5.1 Github repository link
 
-Provide the link to your PUBLIC repository here: ...
+Provide the link to your PUBLIC repository here: <https://github.com/OLHHRuyten/Air-pollution-and-health-4.3-NL>
 
 ## 5.2 Reference list
 
