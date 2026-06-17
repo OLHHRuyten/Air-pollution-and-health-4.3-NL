@@ -508,7 +508,9 @@ geom_jitter(width = 0.15, alpha = 0.4, color = "grey30",
   )
 ```
 
-Here you provide a description of why the plot above is relevant to your specific social problem.
+By comparing the PM 2.5 particulate matter levels between the randstad boxplot and the niet-randstad boxplot, the boxplot comparison clearly shows regional differences in Dutch air quality. This graphic directly relates to the project's main social issue, which is examining the effects of transportation, industrial infrastructure, and densely populated areas on localized pollution and public health.
+
+These plots demonstrate that randstad areas have a greater, more concentrated load of particle matter, even though national data indicates that industries like agriculture dominate nitrogen emissions across rural regions. The randstad boxplot's larger median PM 2.5 value highlights the unequal distribution of environmental effects and presents air pollution as a pressing public health and urban development issue.
 
 ## 3.6 Event analysis
 
