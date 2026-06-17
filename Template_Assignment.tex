@@ -1,0 +1,821 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Template},
+  pdfauthor={Studentnames and studentnumbers here},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Template}
+\author{Studentnames and studentnumbers here}
+\date{2026-06-17}
+
+\begin{document}
+\maketitle
+
+\section{Set-up your environment}\label{set-up-your-environment}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: tidyverse
+\end{verbatim}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr     1.2.1     v readr     2.2.0
+## v forcats   1.0.1     v stringr   1.6.0
+## v ggplot2   4.0.3     v tibble    3.3.1
+## v lubridate 1.9.5     v tidyr     1.3.2
+## v purrr     1.2.2     
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(rmarkdown)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: rmarkdown
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(yaml)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: yaml
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(systemfonts)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Title Page}\label{title-page}
+
+Changes in nitrogen emissions in the Netherlands
+
+Group project by: Naut Leuverink, Lucas Wolffenbuttel, Mike Ottervanger,
+Otto Ruyten, Nicolaas van Nispen en Robin Koldenhof
+
+4.3
+
+Fatima Amankour
+
+\section{Part 1 - Identify a Social
+Problem}\label{part-1---identify-a-social-problem}
+
+Use APA referencing throughout your document.
+\href{https://www.mendeley.com/guides/apa-citation-guide/}{Here's a link
+to some explanation.}
+
+\subsection{1.1 Describe the Social
+Problem}\label{describe-the-social-problem}
+
+Include the following:
+
+\begin{itemize}
+\item
+  Why is this relevant?
+\item
+  Nitrogen emissions represent a critical public health crisis in the
+  Netherlands. Elevated atmospheric concentrations lead to the
+  production of particulate manner and ozone, which are closely
+  associated with serious health problems such as worsening asthma,
+  long-term cardiovascular problems, and diminished lung function.
+\item
+  This report measures the correlation between public health concerns
+  and regional nitrogen levels over almost 20 years, from 2005 to 2023.
+  By analyzing these temporal and spatial patterns, we want to pinpoint
+  pollution hotspots and offer a data-driven framework for focused
+  reduction initiatives, like industrial restrictions or localized
+  agriculture changes, to successfully lessen the burden on public
+  health.
+\end{itemize}
+
+\section{Part 2 - Data Sourcing}\label{part-2---data-sourcing}
+
+\subsection{2.1 Load in the data}\label{load-in-the-data}
+
+Preferably from a URL, but if not, make sure to download the data and
+store it in a shared location that you can load the data in from. Do not
+store the data in a folder you include in the Github repository!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PolutionInGeneral}\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"data/Polution in general.csv"}\NormalTok{)}
+\NormalTok{BA\_BronnenVanStikstof }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"data/Bronnen van stikstof.csv"}\NormalTok{)}
+\NormalTok{AA\_BronnenVanFijnstof }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"data/Bronnen van Fijnstof.csv"}\NormalTok{)}
+\NormalTok{JaargemiddeldeFijnstof }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"data/Jaargemiddelde PM10 per Locatie 2015{-}2025.csv"}\NormalTok{, }\AttributeTok{sep =} \StringTok{";"}\NormalTok{)}
+\NormalTok{Meetlocaties }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"data/luchtmeetnet\_meetlocaties.csv"}\NormalTok{)}
+
+
+\FunctionTok{saveRDS}\NormalTok{(PolutionInGeneral, }\StringTok{"data/PolutionInGeneral.rds"}\NormalTok{)}
+\NormalTok{PolutionInGeneral }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"data/PolutionInGeneral.rds"}\NormalTok{)}
+\FunctionTok{saveRDS}\NormalTok{(BA\_BronnenVanStikstof, }\StringTok{"data/BA\_BronnenVanStikstof.rds"}\NormalTok{)}
+\NormalTok{BA\_BronnenVanStikstof }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"data/BA\_BronnenVanStikstof.rds"}\NormalTok{)}
+\FunctionTok{saveRDS}\NormalTok{(AA\_BronnenVanFijnstof, }\StringTok{"data/AA\_BronnenVanFijnstof.rds"}\NormalTok{)}
+\NormalTok{AA\_BronnenVanFijnstof }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"data/AA\_BronnenVanFijnstof.rds"}\NormalTok{)}
+\FunctionTok{saveRDS}\NormalTok{(JaargemiddeldeFijnstof, }\StringTok{"data/JaargemiddeldeFijnstof.rds"}\NormalTok{)}
+\NormalTok{JaargemiddeldeFijnstof }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"data/JaargemiddeldeFijnstof.rds"}\NormalTok{)}
+\FunctionTok{saveRDS}\NormalTok{(Meetlocaties, }\StringTok{"data/Meetlocaties.rds"}\NormalTok{)}
+\NormalTok{Meetlocaties }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"data/Meetlocaties.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{2.2 Provide a short summary of the
+dataset(s)}\label{provide-a-short-summary-of-the-datasets}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#head(PolutionInGeneral)}
+\end{Highlighting}
+\end{Shaded}
+
+This dataset contains 11 variables, each representing a different year.
+For each year, data is provided on the levels of nitrogen, NMVOCs
+(non-methane volatile organic compounds), sulfur oxides, and PM2.5
+particulate matter observed in the air. By analyzing this data, we can
+assess the severity of air pollution and identify trends in air quality
+over time.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#head(JaargemiddeldeFijnstof)}
+\end{Highlighting}
+\end{Shaded}
+
+These datasets show particulate matter (fine dust) levels measured at
+various monitoring stations across the Netherlands over the years 2005
+till 2025. This provides a clear insight into the periods and regions
+where particulate matter causes the greatest impact and pollution.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#head(BA\_BronnenVanStikstof)}
+\end{Highlighting}
+\end{Shaded}
+
+This dataset shows the sources of nitrogen measured over a time period
+from 2005 till 2024
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#head(AA\_BronnenVanFijnstof)}
+\end{Highlighting}
+\end{Shaded}
+
+This dataset shows the sources of fine dust measured over a time period
+from 2005 till 2024
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{inline\_code }\OtherTok{=} \ConstantTok{TRUE}
+\end{Highlighting}
+\end{Shaded}
+
+These are things that are usually included in the metadata of the
+dataset. For your project, you need to provide us with the information
+from your metadata that we need to understand your dataset of choice.
+
+\subsection{2.3 Describe the type of variables
+included}\label{describe-the-type-of-variables-included}
+
+Most of the datasets include a duration of time most often 2005 till
+2024, and a variable that may be a specific measuring station or a
+source of polution.
+
+\section{Part 3 - Quantifying}\label{part-3---quantifying}
+
+\subsection{3.1 Data cleaning}\label{data-cleaning}
+
+Say we want to include only larger distances (above 2) in our dataset,
+we can filter for this.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Laatste rij was .cbs, die hebben we verwijderd}
+\NormalTok{AA\_BronnenVanFijnstof}\OtherTok{\textless{}{-}}\NormalTok{ AA\_BronnenVanFijnstof [}\SpecialCharTok{{-}}\FunctionTok{nrow}\NormalTok{(AA\_BronnenVanFijnstof),]}
+
+\NormalTok{AA\_BronnenVanFijnstof }\OtherTok{\textless{}{-}}\NormalTok{ AA\_BronnenVanFijnstof }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.character),}\SpecialCharTok{\textasciitilde{}} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{gsub}\NormalTok{(}\StringTok{","}\NormalTok{,}\StringTok{"."}\NormalTok{, .x))))}
+
+\CommentTok{\#Nieuwe variabele gemaakt }
+\NormalTok{AA\_BronnenVanFijnstof}\SpecialCharTok{$}\NormalTok{Totaal }\OtherTok{\textless{}{-}}\NormalTok{ AA\_BronnenVanFijnstof}\SpecialCharTok{$}\NormalTok{Landbouw..bosbouw.en.visserij..mln.kg.}\SpecialCharTok{+}\NormalTok{ AA\_BronnenVanFijnstof}\SpecialCharTok{$}\NormalTok{Particuliere.huishoudens..mln.kg.}\SpecialCharTok{+}\NormalTok{ AA\_BronnenVanFijnstof}\SpecialCharTok{$}\NormalTok{Energiesector..mln.kg.}\SpecialCharTok{+}\NormalTok{ AA\_BronnenVanFijnstof}\SpecialCharTok{$}\NormalTok{Industrie.en.afval..mln.kg.}\SpecialCharTok{+}\NormalTok{ AA\_BronnenVanFijnstof}\SpecialCharTok{$}\NormalTok{Vervoer..mln.kg.}\SpecialCharTok{+}\NormalTok{ AA\_BronnenVanFijnstof}\SpecialCharTok{$}\NormalTok{Diensten..water.en.bouw..mln.kg.}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{BA\_BronnenVanStikstof}\OtherTok{\textless{}{-}}\NormalTok{ BA\_BronnenVanStikstof [}\SpecialCharTok{{-}}\FunctionTok{nrow}\NormalTok{(BA\_BronnenVanStikstof),]}
+
+\NormalTok{BA\_BronnenVanStikstof }\OtherTok{\textless{}{-}}\NormalTok{ BA\_BronnenVanStikstof }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.character),}\SpecialCharTok{\textasciitilde{}} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{gsub}\NormalTok{(}\StringTok{","}\NormalTok{,}\StringTok{"."}\NormalTok{, .x))))}
+
+
+\NormalTok{BA\_BronnenVanStikstof}\SpecialCharTok{$}\NormalTok{Totaal }\OtherTok{\textless{}{-}}\NormalTok{ BA\_BronnenVanStikstof}\SpecialCharTok{$}\NormalTok{Landbouw..bosbouw.en.visserij..mln.kg.}\SpecialCharTok{+}\NormalTok{ BA\_BronnenVanStikstof}\SpecialCharTok{$}\NormalTok{Particuliere.huishoudens..mln.kg.}\SpecialCharTok{+}\NormalTok{ BA\_BronnenVanStikstof}\SpecialCharTok{$}\NormalTok{Energiesector..mln.kg.}\SpecialCharTok{+}\NormalTok{ BA\_BronnenVanStikstof}\SpecialCharTok{$}\NormalTok{Industrie.en.afval..mln.kg.}\SpecialCharTok{+}\NormalTok{ BA\_BronnenVanStikstof}\SpecialCharTok{$}\NormalTok{Vervoer..mln.kg.}\SpecialCharTok{+}\NormalTok{ BA\_BronnenVanStikstof}\SpecialCharTok{$}\NormalTok{Diensten..water.en.bouw..mln.kg.}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Cleans the Meetlocaties dataset by splitting all data
+into separate columns and removing the first four
+rows.}\label{cleans-the-meetlocaties-dataset-by-splitting-all-data-into-separate-columns-and-removing-the-first-four-rows.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# We overschrijven \textquotesingle{}Meetlocaties\textquotesingle{} direct zodat de oude versie verdwijnt}
+\NormalTok{Meetlocaties }\OtherTok{\textless{}{-}}\NormalTok{ Meetlocaties }\SpecialCharTok{\%\textgreater{}\%}
+  \CommentTok{\# 1. Haal de rijen met een \textquotesingle{}\#\textquotesingle{} direct weg}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{str\_starts}\NormalTok{(.[[}\DecValTok{1}\NormalTok{]], }\StringTok{"\#"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  
+  \CommentTok{\# 2. Splits direct op de puntkomma\textquotesingle{}s naar losse kolommen}
+  \FunctionTok{separate\_wider\_delim}\NormalTok{(}
+    \AttributeTok{cols =} \DecValTok{1}\NormalTok{, }
+    \AttributeTok{delim =} \StringTok{";"}\NormalTok{, }
+    \AttributeTok{names =} \FunctionTok{c}\NormalTok{(}\StringTok{"meetlocatie\_id"}\NormalTok{, }\StringTok{"bron\_id"}\NormalTok{, }\StringTok{"meetlocatie\_naam"}\NormalTok{, }
+              \StringTok{"meetlocatie\_plaatsnaam"}\NormalTok{, }\StringTok{"breedtegraad"}\NormalTok{, }\StringTok{"lengtegraad"}\NormalTok{, }
+              \StringTok{"hoogte"}\NormalTok{, }\StringTok{"meetlocatie\_begindatumtijd"}\NormalTok{, }\StringTok{"meetlocatie\_einddatumtijd"}\NormalTok{)}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Puts Meetlocaties \& JaargemiddeldeFijnstof together the
+data gets a clear
+location}\label{puts-meetlocaties-jaargemiddeldefijnstof-together-the-data-gets-a-clear-location}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\CommentTok{\# 1. Zorg dat de koppelnaam in JaargemiddeldeFijnstof exact matcht}
+\FunctionTok{names}\NormalTok{(JaargemiddeldeFijnstof)[}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \StringTok{"meetlocatie\_id"}
+
+\CommentTok{\# 2. Voer de koppeling uit en pak flexibel alle kolommen mee}
+\NormalTok{Fijnstof\_Met\_Locaties }\OtherTok{\textless{}{-}}\NormalTok{ JaargemiddeldeFijnstof }\SpecialCharTok{\%\textgreater{}\%}
+  \CommentTok{\# Koppel de schone Meetlocaties tabel eraan vast}
+  \FunctionTok{left\_join}\NormalTok{(Meetlocaties, }\AttributeTok{by =} \StringTok{"meetlocatie\_id"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  
+  \CommentTok{\# De nieuwe indeling: we zetten de handige kolommen vooraan, }
+  \CommentTok{\# en met \textquotesingle{}everything()\textquotesingle{} komen ALLE overige kolommen (de jaren) er automatisch achteraan!}
+  \FunctionTok{select}\NormalTok{(}
+    \AttributeTok{Plaatsnaam =}\NormalTok{ meetlocatie\_plaatsnaam,}
+    \AttributeTok{Breedtegraad =}\NormalTok{ breedtegraad,}
+    \AttributeTok{Lengtegraad =}\NormalTok{ lengtegraad,}
+    \FunctionTok{everything}\NormalTok{(),          }\CommentTok{\# Neemt automatisch alle overige kolommen/jaren mee}
+    \SpecialCharTok{{-}}\NormalTok{meetlocatie\_id,       }\CommentTok{\# Haalt de oude NL{-}code netjes weg}
+    \SpecialCharTok{{-}}\NormalTok{bron\_id,              }\CommentTok{\# Ruimt direct overbodige kolommen uit Meetlocaties op}
+    \SpecialCharTok{{-}}\NormalTok{meetlocatie\_naam,}
+    \SpecialCharTok{{-}}\NormalTok{hoogte,}
+    \SpecialCharTok{{-}}\NormalTok{meetlocatie\_begindatumtijd,}
+    \SpecialCharTok{{-}}\NormalTok{meetlocatie\_einddatumtijd}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Makes Fijnstof\_Met\_Locaties
+numeric}\label{makes-fijnstof_met_locaties-numeric}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Fijnstof\_Met\_Locaties }\OtherTok{\textless{}{-}}\NormalTok{ Fijnstof\_Met\_Locaties }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \CommentTok{\# 1. Coördinaten omzetten naar numeriek}
+    \AttributeTok{Breedtegraad =} \FunctionTok{as.numeric}\NormalTok{(Breedtegraad),}
+    \AttributeTok{Lengtegraad =} \FunctionTok{as.numeric}\NormalTok{(Lengtegraad)}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \CommentTok{\# 2. Alle jaarkolommen (die beginnen met X en daarna 4 cijfers) in één keer opschonen.}
+    \CommentTok{\# Dit haalt de sterretjes, spaties en streepjes weg en maakt er getallen van.}
+    \FunctionTok{across}\NormalTok{(}
+      \AttributeTok{.cols =} \FunctionTok{matches}\NormalTok{(}\StringTok{"\^{}X}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{d\{4\}$"}\NormalTok{), }
+      \AttributeTok{.fns =} \SpecialCharTok{\textasciitilde{}} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{str\_replace\_all}\NormalTok{(.x, }\StringTok{"([*]|}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{s|{-})"}\NormalTok{, }\StringTok{""}\NormalTok{))}
+\NormalTok{    )}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+2 datasets naast elkaar gezet, en dat per jaar vergeleken, dataset
+fijnstof gaat tot 2024 en dataset stikstof gaat tot 2023, daar moest ik
+nog een aanpassing in maken.
+
+Please use a separate `R block' of code for each type of cleaning. So,
+e.g.~one for missing values, a new one for removing unnecessary
+variables etc.
+
+\subsection{3.2 Generate necessary
+variables}\label{generate-necessary-variables}
+
+\subsubsection{Creates total variables}\label{creates-total-variables}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# De bestaande kolom \textquotesingle{}Totaal\textquotesingle{} wordt gebruikt.}
+\CommentTok{\# De totalen van fijnstof en stikstof worden gecombineerd op basis van het jaar.}
+\CommentTok{\# Omdat stikstof tot en met 2023 loopt, loopt de gecombineerde tabel ook tot en met 2023.}
+
+\NormalTok{AB\_Fijnstof\_Totaal }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Jaar =}\NormalTok{ AA\_BronnenVanFijnstof[, }\DecValTok{1}\NormalTok{],}
+  \AttributeTok{Totaal\_fijnstof =}\NormalTok{ AA\_BronnenVanFijnstof}\SpecialCharTok{$}\NormalTok{Totaal}
+\NormalTok{)}
+
+\NormalTok{BB\_Stikstof\_Totaal }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Jaar =}\NormalTok{ BA\_BronnenVanStikstof[, }\DecValTok{1}\NormalTok{],}
+  \AttributeTok{Totaal\_stikstof =}\NormalTok{ BA\_BronnenVanStikstof}\SpecialCharTok{$}\NormalTok{Totaal}
+\NormalTok{)}
+
+\NormalTok{totale\_data }\OtherTok{\textless{}{-}} \FunctionTok{merge}\NormalTok{(}
+\NormalTok{  AB\_Fijnstof\_Totaal,}
+\NormalTok{  BB\_Stikstof\_Totaal,}
+  \AttributeTok{by =} \StringTok{"Jaar"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{DIstancing data from the randstad from the
+Non-randstad}\label{distancing-data-from-the-randstad-from-the-non-randstad}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Maak eerst de basisregio{-}dataset aan (als je dat nog niet had gedaan)}
+\NormalTok{randstad\_plaatsen }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Amsterdam"}\NormalTok{, }\StringTok{"Rotterdam"}\NormalTok{, }\StringTok{"Den Haag"}\NormalTok{, }\StringTok{"Utrecht"}\NormalTok{, }
+                       \StringTok{"Haarlem"}\NormalTok{, }\StringTok{"Zaanstad"}\NormalTok{, }\StringTok{"Leiden"}\NormalTok{, }\StringTok{"Dordrecht"}\NormalTok{, }
+                       \StringTok{"Almere"}\NormalTok{, }\StringTok{"Amersfoort"}\NormalTok{, }\StringTok{"Delft"}\NormalTok{, }\StringTok{"Schiedam"}\NormalTok{)}
+
+\NormalTok{Fijnstof\_Regio }\OtherTok{\textless{}{-}}\NormalTok{ Fijnstof\_Met\_Locaties }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Regio =} \FunctionTok{if\_else}\NormalTok{(Plaatsnaam }\SpecialCharTok{\%in\%}\NormalTok{ randstad\_plaatsen, }\StringTok{"Randstad"}\NormalTok{, }\StringTok{"Other\_regions"}\NormalTok{))}
+
+\CommentTok{\# {-}{-}{-} HIER SPLITSEN WE ZE IN TWEE LOSSE DATASETS {-}{-}{-}}
+\NormalTok{Fijnstof\_Randstad      }\OtherTok{\textless{}{-}}\NormalTok{ Fijnstof\_Regio }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(Regio }\SpecialCharTok{==} \StringTok{"Randstad"}\NormalTok{)}
+\NormalTok{Fijnstof\_Niet\_Randstad }\OtherTok{\textless{}{-}}\NormalTok{ Fijnstof\_Regio }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(Regio }\SpecialCharTok{==} \StringTok{"Other\_regions"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{3.3 Create line graphs}\label{create-line-graphs}
+
+\subsubsection{Simple graph about the general emission of particulate
+matter
+(fijnstof)}\label{simple-graph-about-the-general-emission-of-particulate-matter-fijnstof}
+
+This graph shows the evolution of total particulate matter emissions
+over the years from 2005 to 2025, where you can see that the total
+particulate matter emissions have almost halved over the years.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+
+\FunctionTok{ggplot}\NormalTok{(AA\_BronnenVanFijnstof, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ X., }\AttributeTok{y =}\NormalTok{ Totaal)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{linewidth =} \FloatTok{1.2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Total particulate matter emissions over the years"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Years"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Particulate matter (mln kg)"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Template_Assignment_files/Template_Assignment_files/figure-latex/unnamed-chunk-11-1.pdf}}
+
+\subsubsection{Simple graph about the general emission of
+nitrogen}\label{simple-graph-about-the-general-emission-of-nitrogen}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+
+\FunctionTok{ggplot}\NormalTok{(BA\_BronnenVanStikstof, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ X., }\AttributeTok{y =}\NormalTok{ Totaal)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{linewidth =} \FloatTok{1.2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Total nitrogen emissions over the years"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Years"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Nitrogen (mln kg)"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Template_Assignment_files/Template_Assignment_files/figure-latex/unnamed-chunk-12-1.pdf}}
+
+\subsubsection{Detailed and Multifaceted Map of Nitrogen Emission
+Origins}\label{detailed-and-multifaceted-map-of-nitrogen-emission-origins}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 1. Laad de benodigde bibliotheken}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\CommentTok{\# 2. Bereid de dataset voor: hernoem de eerste kolom naar "X."}
+\FunctionTok{names}\NormalTok{(BA\_BronnenVanStikstof)[}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \StringTok{"X."}
+
+\CommentTok{\# 3. Zet de tabel om naar het lange formaat dat jouw ggplot verwacht}
+\NormalTok{BA\_BronnenVanStikstof\_long }\OtherTok{\textless{}{-}}\NormalTok{ BA\_BronnenVanStikstof }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}
+    \AttributeTok{cols =} \SpecialCharTok{{-}}\NormalTok{X., }
+    \AttributeTok{names\_to =} \StringTok{"Bron"}\NormalTok{, }
+    \AttributeTok{values\_to =} \StringTok{"Uitstoot"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \CommentTok{\# BELANGRIJK: Filter de "Totaal"{-}kolom eruit zodat deze de grafiek niet vertekent}
+  \FunctionTok{filter}\NormalTok{(Bron }\SpecialCharTok{!=} \StringTok{"Totaal"}\NormalTok{)}
+
+
+\FunctionTok{ggplot}\NormalTok{(BA\_BronnenVanStikstof\_long,}
+       \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ X.,                                    }\CommentTok{\# \textless{}{-}{-}{-} Werkt nu met de jaren uit je CSV}
+           \AttributeTok{y =}\NormalTok{ Uitstoot, }
+           \AttributeTok{fill =}\NormalTok{ Bron)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_area}\NormalTok{(}\AttributeTok{color =} \StringTok{"white"}\NormalTok{, }\AttributeTok{linewidth =} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{+}       \CommentTok{\# \textless{}{-}{-}{-} Creëert de witte scheidingslijntjes}
+  \FunctionTok{scale\_fill\_brewer}\NormalTok{(}
+  \AttributeTok{palette =} \StringTok{"Set3"}\NormalTok{,}
+  \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Services, water and construction"}\NormalTok{,}
+    \StringTok{"Energy sector"}\NormalTok{,}
+    \StringTok{"Industry and waste"}\NormalTok{,}
+    \StringTok{"Agriculture, forestry and fisheries"}\NormalTok{,}
+    \StringTok{"Households"}\NormalTok{,}
+    \StringTok{"Transport"}
+\NormalTok{  )}
+\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(                                               }\CommentTok{\# \textless{}{-}{-}{-} Namen op de assen en titels}
+    \AttributeTok{title =} \StringTok{"Nitrogen emissions per source"}\NormalTok{,    }
+    \AttributeTok{x =} \StringTok{"Years"}\NormalTok{,}
+   \AttributeTok{y =} \StringTok{"Emissions (million kg)"}\NormalTok{,}
+    \AttributeTok{fill =} \StringTok{"Sources"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_bw}\NormalTok{() }\SpecialCharTok{+}                                        \CommentTok{\# \textless{}{-}{-}{-} Grijze rasterlijnen inschakelen}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{panel.grid.major =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"grey80"}\NormalTok{),}
+    \AttributeTok{panel.grid.minor =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"grey90"}\NormalTok{),}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{)}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Template_Assignment_files/Template_Assignment_files/figure-latex/unnamed-chunk-13-1.pdf}}
+
+\subsubsection{Detailed and Multifaceted Map of Particulate matter
+Origins}\label{detailed-and-multifaceted-map-of-particulate-matter-origins}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 1. Laad de benodigde bibliotheken}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\CommentTok{\# 2. Bereid de dataset voor: hernoem de eerste kolom naar "X."}
+\FunctionTok{names}\NormalTok{(AA\_BronnenVanFijnstof)[}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \StringTok{"X."}
+
+\CommentTok{\# 3. Zet de tabel om naar het lange formaat dat jouw ggplot verwacht}
+\NormalTok{AA\_BronnenVanFijnstof\_long }\OtherTok{\textless{}{-}}\NormalTok{ AA\_BronnenVanFijnstof }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}
+    \AttributeTok{cols =} \SpecialCharTok{{-}}\NormalTok{X., }
+    \AttributeTok{names\_to =} \StringTok{"Bron"}\NormalTok{, }
+    \AttributeTok{values\_to =} \StringTok{"Uitstoot"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \CommentTok{\# BELANGRIJK: Filter de "Totaal"{-}kolom eruit zodat deze de grafiek niet vertekent}
+  \FunctionTok{filter}\NormalTok{(Bron }\SpecialCharTok{!=} \StringTok{"Totaal"}\NormalTok{)}
+
+
+\FunctionTok{ggplot}\NormalTok{(AA\_BronnenVanFijnstof\_long,}
+       \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ X.,                                    }\CommentTok{\# \textless{}{-}{-}{-} Werkt nu met de jaren uit je CSV}
+           \AttributeTok{y =}\NormalTok{ Uitstoot, }
+           \AttributeTok{fill =}\NormalTok{ Bron)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_area}\NormalTok{(}\AttributeTok{color =} \StringTok{"white"}\NormalTok{, }\AttributeTok{linewidth =} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{+}       \CommentTok{\# \textless{}{-}{-}{-} Creëert de witte scheidingslijntjes}
+  \FunctionTok{scale\_fill\_brewer}\NormalTok{(}
+  \AttributeTok{palette =} \StringTok{"Set3"}\NormalTok{,}
+  \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Services, water and construction"}\NormalTok{,}
+    \StringTok{"Energy sector"}\NormalTok{,}
+    \StringTok{"Industry and waste"}\NormalTok{,}
+    \StringTok{"Agriculture, forestry and fisheries"}\NormalTok{,}
+    \StringTok{"Households"}\NormalTok{,}
+    \StringTok{"Transport"}
+\NormalTok{  )}
+\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(                                               }\CommentTok{\# \textless{}{-}{-}{-} Namen op de assen en titels}
+    \AttributeTok{title =} \StringTok{"Particulate matter emissions per source"}\NormalTok{,    }
+    \AttributeTok{x =} \StringTok{"Years"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Emissions (million kg)"}\NormalTok{,}
+    \AttributeTok{fill =} \StringTok{"Sources"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_bw}\NormalTok{() }\SpecialCharTok{+}                                        \CommentTok{\# \textless{}{-}{-}{-} Grijze rasterlijnen inschakelen}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{panel.grid.major =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"grey80"}\NormalTok{),}
+    \AttributeTok{panel.grid.minor =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"grey90"}\NormalTok{),}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{)}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Template_Assignment_files/Template_Assignment_files/figure-latex/unnamed-chunk-14-1.pdf}}
+
+\subsection{3.4 Creating a heatmap}\label{creating-a-heatmap}
+
+\begin{verbatim}
+## Linking to GEOS 3.14.1, GDAL 3.5.3, PROJ 9.5.1; sf_use_s2() is TRUE
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Template_Assignment_files/Template_Assignment_files/figure-latex/visualise_map-1.pdf}}
+
+Here you provide a description of why the plot above is relevant to your
+specific social problem.
+
+\subsection{3.5 Visualize sub-population
+variation}\label{visualize-sub-population-variation}
+
+\subsubsection{A boxplot that combines the randstad and the
+rest}\label{a-boxplot-that-combines-the-randstad-and-the-rest}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\CommentTok{\# We gebruiken de gecombineerde dataset \textquotesingle{}Fijnstof\_Regio\textquotesingle{}}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ Fijnstof\_Regio, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Regio, }\AttributeTok{y =} \FunctionTok{as.numeric}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{X2025}\StringTok{\textasciigrave{}}\NormalTok{), }\AttributeTok{fill =}\NormalTok{ Regio)) }\SpecialCharTok{+}
+  
+\CommentTok{\# 1. Teken de boxplots naast elkaar (voeg na.rm = TRUE toe)}
+\FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{,}
+             \AttributeTok{outlier.color =} \StringTok{"red"}\NormalTok{, }\AttributeTok{outlier.shape =} \DecValTok{16}\NormalTok{, }\AttributeTok{outlier.size =} \DecValTok{2}\NormalTok{,}
+             \AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{+}
+
+\CommentTok{\# 2. Voeg de individuele meetstations als stipjes toe (voeg na.rm = TRUE toe)}
+\FunctionTok{geom\_jitter}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.15}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.4}\NormalTok{, }\AttributeTok{color =} \StringTok{"grey30"}\NormalTok{, }
+            \AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{+}
+  
+  \CommentTok{\# 3. Geef beide groepen een eigen herkenbare kleur}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"Randstad"} \OtherTok{=} \StringTok{"coral"}\NormalTok{, }\StringTok{"Other\_regions"} \OtherTok{=} \StringTok{"skyblue"}\NormalTok{)) }\SpecialCharTok{+}
+  
+  \CommentTok{\# 4. Titels en labels aanpassen}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Comparison Particulate matter emissions (2025)"}\NormalTok{,}
+    \AttributeTok{subtitle =} \StringTok{"Randstad versus Rest of the country"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"PM2.5 Value (µg/m³)"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{""} \CommentTok{\# De X{-}as laat nu netjes de categorienamen zien}
+\NormalTok{  ) }\SpecialCharTok{+}
+  
+  \CommentTok{\# 5. De lay{-}out strak maken (de labels op de X{-}as laten we nu wél staan!)}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{, }\CommentTok{\# Legenda is overbodig omdat de X{-}as het al vertelt}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{),}
+    \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{)}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Template_Assignment_files/Template_Assignment_files/figure-latex/unnamed-chunk-15-1.pdf}}
+
+By comparing the PM 2.5 particulate matter levels between the randstad
+boxplot and the other regions boxplot, the boxplot comparison clearly
+shows regional differences in Dutch air quality. This graphic directly
+relates to the project's main social issue, which is examining the
+effects of transportation, industrial infrastructure, and densely
+populated areas on localized pollution and public health.
+
+These plots demonstrate that randstad areas have a greater, more
+concentrated load of particle matter, even though national data
+indicates that industries like agriculture dominate nitrogen emissions
+across rural regions. The randstad boxplot's larger median PM 2.5 value
+highlights the unequal distribution of environmental effects and
+presents air pollution as a pressing public health and urban development
+issue.
+
+\subsection{3.6 Event analysis}\label{event-analysis}
+
+Analyze the relationship between two variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 1. Laad de benodigde bibliotheken}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\CommentTok{\# 2. Bereid de dataset voor: hernoem de eerste kolom naar "X."}
+\FunctionTok{names}\NormalTok{(BA\_BronnenVanStikstof)[}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \StringTok{"X."}
+
+\CommentTok{\# (Optioneel: Zorg dat je jaartallen numeriek zijn, mocht de lijn niet werken)}
+\CommentTok{\# BA\_BronnenVanStikstof$X. \textless{}{-} as.numeric(BA\_BronnenVanStikstof$X.)}
+
+\CommentTok{\# 3. Zet de tabel om naar het lange formaat dat jouw ggplot verwacht}
+\NormalTok{BA\_BronnenVanStikstof\_long }\OtherTok{\textless{}{-}}\NormalTok{ BA\_BronnenVanStikstof }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}
+    \AttributeTok{cols =} \SpecialCharTok{{-}}\NormalTok{X., }
+    \AttributeTok{names\_to =} \StringTok{"Bron"}\NormalTok{, }
+    \AttributeTok{values\_to =} \StringTok{"Uitstoot"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \CommentTok{\# BELANGRIJK: Filter de "Totaal"{-}kolom eruit zodat deze de grafiek niet vertekent}
+  \FunctionTok{filter}\NormalTok{(Bron }\SpecialCharTok{!=} \StringTok{"Totaal"}\NormalTok{)}
+
+
+\CommentTok{\# 4. Maak de plot}
+\FunctionTok{ggplot}\NormalTok{(BA\_BronnenVanStikstof\_long,}
+       \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ X.,                                    }\CommentTok{\# \textless{}{-}{-}{-} Werkt nu met de jaren uit je CSV}
+           \AttributeTok{y =}\NormalTok{ Uitstoot, }
+           \AttributeTok{fill =}\NormalTok{ Bron)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_area}\NormalTok{(}\AttributeTok{color =} \StringTok{"white"}\NormalTok{, }\AttributeTok{linewidth =} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{+}       \CommentTok{\# \textless{}{-}{-}{-} Creëert de witte scheidingslijntjes}
+  
+  \CommentTok{\# 5. lijn event analyse 2019 {-}{-}{-}}
+  \FunctionTok{geom\_vline}\NormalTok{(}
+  \AttributeTok{xintercept =} \DecValTok{2019}\NormalTok{,}
+  \AttributeTok{color =} \StringTok{"darkred"}\NormalTok{,}
+  \AttributeTok{linewidth =} \DecValTok{1}\NormalTok{,}
+  \AttributeTok{linetype =} \StringTok{"dashed"}
+\NormalTok{) }\SpecialCharTok{+}
+\FunctionTok{annotate}\NormalTok{(}
+  \StringTok{"text"}\NormalTok{,}
+  \AttributeTok{x =} \DecValTok{2019}\NormalTok{,}
+  \AttributeTok{y =} \DecValTok{285}\NormalTok{,}
+  \AttributeTok{label =} \StringTok{"Nitrogen crisis}\SpecialCharTok{\textbackslash{}n}\StringTok{2019"}\NormalTok{,}
+  \AttributeTok{color =} \StringTok{"darkred"}\NormalTok{,}
+  \AttributeTok{angle =} \DecValTok{90}\NormalTok{,}
+  \AttributeTok{vjust =} \SpecialCharTok{{-}}\FloatTok{0.5}
+\NormalTok{) }\SpecialCharTok{+}
+  \CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+  
+  \FunctionTok{scale\_fill\_brewer}\NormalTok{(}
+  \AttributeTok{palette =} \StringTok{"Set3"}\NormalTok{,}
+  \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Services, water and construction"}\NormalTok{,}
+    \StringTok{"Energy sector"}\NormalTok{,}
+    \StringTok{"Industry and waste"}\NormalTok{,}
+    \StringTok{"Agriculture, forestry and fisheries"}\NormalTok{,}
+    \StringTok{"Households"}\NormalTok{,}
+    \StringTok{"Transport"}
+\NormalTok{  )}
+\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(                                               }\CommentTok{\# \textless{}{-}{-}{-} Namen op de assen en titels}
+    \AttributeTok{title =} \StringTok{"Nitrogen emissions per source"}\NormalTok{,  }
+    \AttributeTok{x =} \StringTok{"Years"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Emissions (million kg)"}\NormalTok{,}
+    \AttributeTok{fill =} \StringTok{"Sources"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_bw}\NormalTok{() }\SpecialCharTok{+}                                        \CommentTok{\# \textless{}{-}{-}{-} Grijze rasterlijnen inschakelen}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{panel.grid.major =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"grey80"}\NormalTok{),}
+    \AttributeTok{panel.grid.minor =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"grey90"}\NormalTok{),}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{)}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Template_Assignment_files/Template_Assignment_files/figure-latex/analysis-1.pdf}}
+
+The graph shows the development of nitrogen emissions from different
+sources in the Netherlands between 2005 and 2024. Overall, emissions
+decreased substantially over the observed period, with the largest
+contribution consistently coming from the transport sector. Emissions
+from industry, the energy sector, households, agriculture, and services
+also show a downward trend.
+
+The vertical dashed line indicates the Dutch nitrogen crisis in 2019.
+After this point, emissions continued to decline across most sectors.
+This trend coincides with the introduction of stricter environmental
+measures and, shortly afterwards, the COVID-19 pandemic. However, based
+on this graph alone, no direct causal relationship can be established
+between these events and the observed decrease in emissions.
+
+In the graph you see that there is a strong drop in nitrogen emissions
+across multiple sources from 2019 onward. This can be explained by
+multiple factors, such as new more strict emissions laws by the Dutch
+government and also the EU. These laws include a lowering of the speed
+limit to 100 km/h, causing a sharp drop in vehicle emissions. The laws
+also include the freezing of a lot of infrastructure and other building
+projects causing a drop in services and industry emissions. And then
+from late 2019 and 2020 onward there was the COVID pandemic causing
+lower emissions in almost all sectors.
+
+\section{Part 4 - Discussion}\label{part-4---discussion}
+
+\subsection{4.1 Discuss your findings}\label{discuss-your-findings}
+
+\section{Part 5 - Reproducibility}\label{part-5---reproducibility}
+
+\subsection{5.1 Github repository link}\label{github-repository-link}
+
+Provide the link to your PUBLIC repository here:
+\url{https://github.com/OLHHRuyten/Air-pollution-and-health-4.3-NL}
+
+\subsection{5.2 Reference list}\label{reference-list}
+
+Use APA referencing throughout your document. For the datasets:
+AA\_BronnenVanFijnstof, BA\_BronnenVanStikstof and PolutionIngeneral are
+from CBS:
+
+Centraal Bureau voor de Statistiek. (2025, 2 september). Uitstoot
+luchtverontreinigende stoffen lager dan norm voor 2030.
+\url{https://www.cbs.nl/nl-nl/nieuws/2025/36/uitstoot-luchtverontreinigende-stoffen-lager-dan-norm-voor-2030}
+Dataset JaargemiddeldeFijnstof Planbureau voor de Leefomgeving. (z.d.).
+Atlas van de Regio. \url{https://themasites.pbl.nl/atlas-regio/}
+
+\end{document}
