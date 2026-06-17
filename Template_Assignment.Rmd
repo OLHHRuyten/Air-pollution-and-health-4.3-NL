@@ -553,12 +553,14 @@ library(tidyverse)
 # We gebruiken de gecombineerde dataset 'Fijnstof_Regio'
 ggplot(data = Fijnstof_Regio, aes(x = Regio, y = as.numeric(`X2025`), fill = Regio)) +
   
-  # 1. Teken de boxplots naast elkaar
-  geom_boxplot(width = 0.5, alpha = 0.7,
-               outlier.color = "red", outlier.shape = 16, outlier.size = 2) +
-  
-  # 2. Voeg de individuele meetstations als stipjes toe over de juiste boxplot
-  geom_jitter(width = 0.15, alpha = 0.4, color = "grey30") +
+# 1. Teken de boxplots naast elkaar (voeg na.rm = TRUE toe)
+geom_boxplot(width = 0.5, alpha = 0.7,
+             outlier.color = "red", outlier.shape = 16, outlier.size = 2,
+             na.rm = TRUE) +
+
+# 2. Voeg de individuele meetstations als stipjes toe (voeg na.rm = TRUE toe)
+geom_jitter(width = 0.15, alpha = 0.4, color = "grey30", 
+            na.rm = TRUE) +
   
   # 3. Geef beide groepen een eigen herkenbare kleur
   scale_fill_manual(values = c("Randstad" = "coral", "Niet-Randstad" = "skyblue")) +
