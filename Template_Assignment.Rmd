@@ -277,7 +277,6 @@ ggplot(AA_BronnenVanFijnstof, aes(x = X., y = Totaal)) +
 
 This graph shows the evolution of the emission of nitrogen over the years from 2005 to 2025, where you can see that the total particulate matter emissions have more than halved over the years.
 
-
 ```{r}
 library(ggplot2)
 
@@ -295,7 +294,6 @@ ggplot(BA_BronnenVanStikstof, aes(x = X., y = Totaal)) +
 ### Detailed and Multifaceted Map of Nitrogen Emission Origins
 
 A more detailed graph displays the different sources of nitrogen emissions using distinct colors, making it easier to distinguish between the various emission sources.
-
 
 ```{r}
 
@@ -597,6 +595,10 @@ In the graph you see that there is a strong drop in nitrogen emissions across mu
 # Part 4 - Discussion
 
 ## 4.1 Discuss your findings
+
+The comparative boxplots show that the median level of fine particulate matter emissions is higher in the Randstad region than in non-Randstad areas. This pattern is also reflected in the map visualization, where a high concentration of red dots can be observed within the Randstad.
+
+Furthermore, the data indicate that fine particulate matter emissions have decreased since 2005. This downward trend is visible across all of our graphs and can also be observed in the map visualization when the displayed year is adjusted in the code.
 
 # Part 5 - Reproducibility
 
