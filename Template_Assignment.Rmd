@@ -213,6 +213,8 @@ Please use a separate 'R block' of code for each type of cleaning. So, e.g. one 
 
 ### Creates total variables
 
+We need to create a
+
 ```{r}
 # De bestaande kolom 'Totaal' wordt gebruikt.
 # De totalen van fijnstof en stikstof worden gecombineerd op basis van het jaar.
@@ -255,6 +257,8 @@ Fijnstof_Niet_Randstad <- Fijnstof_Regio %>% filter(Regio == "Niet-Randstad")
 
 ### Simple graph about the general emission of particulate matter (fijnstof)
 
+A simple graph that shows the total emissions of nitrogen over the years 2005 till 2025
+
 ```{r}
 library(ggplot2)
 
@@ -271,6 +275,8 @@ ggplot(AA_BronnenVanFijnstof, aes(x = X., y = Totaal)) +
 
 ### Simple graph about the general emission of nitrogen
 
+A simple graph that shows the total emissions of fine particulate matter over the years 2005 till 2025
+
 ```{r}
 library(ggplot2)
 
@@ -286,6 +292,8 @@ ggplot(BA_BronnenVanStikstof, aes(x = X., y = Totaal)) +
 ```
 
 ### Detailed and Multifaceted Map of Nitrogen Emission Origins
+
+A more detailed graph displays the different sources of nitrogen emissions using distinct colors, making it easier to distinguish between the various emission sources.
 
 ```{r}
 
@@ -338,6 +346,8 @@ ggplot(BA_BronnenVanStikstof_long,
 
 ### Detailed and Multifaceted Map of Particulate matter Origins
 
+A more detailed graph displays the different sources of fine particulate matter emissions using distinct colors, making it easier to distinguish between the various emission sources.
+
 ```{r}
 # 1. Laad de benodigde bibliotheken
 library(tidyverse)
@@ -387,6 +397,8 @@ ggplot(AA_BronnenVanFijnstof_long,
 ```
 
 ## 3.4 Creating a heatmap
+
+This map displays the locations of air quality monitoring stations across the Netherlands and shows the measured concentrations of fine particulate matter in the air for the year 2025. A conventional heatmap, in which all municipalities are represented by different colors, was not feasible because data were available for only a limited number of municipalities. In addition, larger municipalities often contained multiple monitoring stations, which sometimes recorded substantially different measurements due to local environmental conditions and station-specific locations. As a result, displaying the individual monitoring stations provides a more accurate representation of the available data.
 
 ```{r visualise_map, echo=FALSE}
 # 1. Installeer de kaart-bibliotheek als je die nog niet hebt
@@ -453,74 +465,11 @@ ggplot() +
   )
 ```
 
-
 Here you provide a description of why the plot above is relevant to your specific social problem.
 
 ## 3.5 Visualize sub-population variation
 
-What is the poverty rate by state?
-
-###Creating a boxplot of the cities within the Randstad
-
-```{r visualise_subpopulations}
-library(tidyverse)
-
-ggplot(data = Fijnstof_Randstad, aes(y = as.numeric(`X2025`))) +
-  # 1. Teken de boxplot (we geven hem een mooi kleurtje en maken hem iets smaller)
-  geom_boxplot(fill = "lightgreen", color = "darkgreen", width = 0.5, alpha = 0.7,
-               outlier.color = "red", outlier.shape = 16, outlier.size = 2) +
-  
-  # 2. Voeg alle individuele meetstations toe als stipjes om de verdeling te zien
-  geom_jitter(aes(x = 0), width = 0.1, alpha = 0.4, color = "grey30") +
-  
-  # 3. Titels en labels aanpassen
-  labs(
-    title = "Distribution of PM2.5 concentrations in the Netherlands (2025)",
-    subtitle = "Each point represents an individual monitoring station",
-    y = "PM2.5 concentration (µg/m³)",
-    x = "" # De X-as laten we leeg omdat we heel Nederland bekijken
-  ) +
-  
-  # 4. De lay-out strak maken en de onnodige getallen op de X-as weghalen
-  theme_minimal() +
-  theme(
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    plot.title = element_text(face = "bold", hjust = 0.5),
-    plot.subtitle = element_text(hjust = 0.5)
-  )
-```
-
-###Creating a boxplot of the cities outside of the Randstad
-
-```{r visualise_subpopulations}
-library(tidyverse)
-
-ggplot(data = Fijnstof_Niet_Randstad, aes(y = as.numeric(`X2025`))) +
-  # 1. Teken de boxplot (we geven hem een mooi kleurtje en maken hem iets smaller)
-  geom_boxplot(fill = "lightgreen", color = "darkgreen", width = 0.5, alpha = 0.7,
-               outlier.color = "red", outlier.shape = 16, outlier.size = 2) +
-  
-  # 2. Voeg alle individuele meetstations toe als stipjes om de verdeling te zien
-  geom_jitter(aes(x = 0), width = 0.1, alpha = 0.4, color = "grey30") +
-  
-  # 3. Titels en labels aanpassen 
-  labs(
-    title = "Distribution of PM2.5 concentrations in the Netherlands (2025)",
-    subtitle = "Each point represents an individual monitoring station",
-    y = "PM2.5 concentration (µg/m³)",
-    x = "" # De X-as laten we leeg omdat we heel Nederland bekijken
-  ) +
-  
-  # 4. De lay-out strak maken en de onnodige getallen op de X-as weghalen
-  theme_minimal() +
-  theme(
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    plot.title = element_text(face = "bold", hjust = 0.5),
-    plot.subtitle = element_text(hjust = 0.5)
-  )
-```
+How does polution differ from the Randstad to the rest of the country?
 
 ### A boxplot that combines the randstad and the rest
 
@@ -635,11 +584,10 @@ annotate(
     plot.title = element_text(hjust = 0.5, face = "bold")
   )
 ```
+
 The graph shows the development of nitrogen emissions from different sources in the Netherlands between 2005 and 2024. Overall, emissions decreased substantially over the observed period, with the largest contribution consistently coming from the transport sector. Emissions from industry, the energy sector, households, agriculture, and services also show a downward trend.
 
 The vertical dashed line indicates the Dutch nitrogen crisis in 2019. After this point, emissions continued to decline across most sectors. This trend coincides with the introduction of stricter environmental measures and, shortly afterwards, the COVID-19 pandemic. However, based on this graph alone, no direct causal relationship can be established between these events and the observed decrease in emissions.
-
-
 
 In the graph you see that there is a strong drop in nitrogen emissions across multiple sources from 2019 onward. This can be explained by multiple factors, such as new more strict emissions laws by the Dutch government and also the EU. These laws include a lowering of the speed limit to 100 km/h, causing a sharp drop in vehicle emissions. The laws also include the freezing of a lot of infrastructure and other building projects causing a drop in services and industry emissions. And then from late 2019 and 2020 onward there was the COVID pandemic causing lower emissions in almost all sectors.
 
