@@ -1,6 +1,6 @@
 ---
 title: "Changes in nitrogen emissions in the Netherlands"
-author: "Mike Ottervanger (2785946), Lucas Wolffenbuttel (2898864), Otto Ruyten (2893051,Nicolaas Van Nipsen (2899432), Robin Koldenhof (281138) "
+author: "Mike Ottervanger (2785946), Lucas Wolffenbuttel (2898864), Otto Ruyten (2893051), Nicolaas Van Nipsen (2899432), Robin Koldenhof (281138) "
 date: "17 June 2026"
 group: "4.3"
 
