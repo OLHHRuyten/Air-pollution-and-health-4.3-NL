@@ -19,7 +19,7 @@ output: pdf_document
 # install.packages("rnaturalearth")      
 # yeinstall.packages("cbsodataR")  
 #install.packages("tinytex")
-library(tinytex)
+#library(tinytex)
 #tinytex::install_tinytex()
 ```
 
@@ -47,6 +47,7 @@ library(systemfonts)
 # Part 2 - Data Sourcing
 
 ## 2.1 Load in the data
+Here we imported the raw data regarding air pollution, particulate matter, nitrogen sources, and monitoring locations into our environment from their original CSV formats. Once the data is loaded, these files are saved as compressed RDS files. Moving from plain text files to R's own format keeps the data organized and locks all variable types in place. This makes sure the files load much faster and work correctly in future steps.
 
 ```{r loading_data, echo=FALSE}
 PolutionInGeneral<- read.csv("data/Polution in general.csv")
@@ -112,8 +113,7 @@ Most of the datasets include a duration of time most often 2005 till 2024, and a
 # Part 3 - Quantifying
 
 ## 3.1 Data cleaning
-
-Say we want to include only larger distances (above 2) in our dataset, we can filter for this.
+In this step we cleaned both the particulate matter and nitrogen datasets. First, the very last row is removed from each file to get rid of unnecessary summary text. Next, the numbers are fixed by changing European commas into standard periods so that R can read them correctly as numeric data. Finally, a new total column is created for each dataset by adding up the emissions from all the individual sectors.
 
 ```{r data_cleaning, echo=FALSE}
 
@@ -139,6 +139,7 @@ BA_BronnenVanStikstof$Totaal <- BA_BronnenVanStikstof$Landbouw..bosbouw.en.visse
 ```
 
 ### Cleans the Meetlocaties dataset by splitting all data into separate columns and removing the first four rows.
+We also cleaned the Meetlocaties dataset by splitting all data into separate columns and removing the first four rows.
 
 ```{r echo=FALSE}
 # We overschrijven 'Meetlocaties' direct zodat de oude versie verdwijnt
@@ -157,6 +158,7 @@ Meetlocaties <- Meetlocaties %>%
 ```
 
 ### Puts Meetlocaties & JaargemiddeldeFijnstof together the data gets a clear location
+After that we merges particulate matter measurements with monitoring location data, adds geographic information, and cleans up the resulting dataset by keeping only the most relevant columns.
 
 ```{r echo=FALSE}
 library(tidyverse)
@@ -186,6 +188,7 @@ Fijnstof_Met_Locaties <- JaargemiddeldeFijnstof %>%
 ```
 
 ### Makes Fijnstof_Met_Locaties numeric
+This code converts coordinates to numeric values and cleans all yearly measurement columns by removing special characters and converting them to numbers.
 
 ```{r echo=FALSE}
 Fijnstof_Met_Locaties <- Fijnstof_Met_Locaties %>%
@@ -207,7 +210,7 @@ Fijnstof_Met_Locaties <- Fijnstof_Met_Locaties %>%
 ## 3.2 Generate necessary variables
 
 ### Creates total variables
-
+In this step, the total annual emissions for both particulate matter and nitrogen are pulled into two smaller, simple tables. The code then matches and merges these two tables together into a single file based on the year. Because the nitrogen data ends in 2023, the combined table automatically stops at the year 2023 as well.
 ```{r echo=FALSE}
 # De bestaande kolom 'Totaal' wordt gebruikt.
 # De totalen van fijnstof en stikstof worden gecombineerd op basis van het jaar.
@@ -231,6 +234,7 @@ totale_data <- merge(
 ```
 
 ### DIstancing data from the randstad from the Non-randstad
+Here we have combined a list of specific cities to form define the Randstad region, The code then checks the city name for each monitoring station: if it is on the list, it gets labeled as Randstad, and if not, it is labeled as Other regions. 
 
 ```{r echo=FALSE}
 # Maak eerst de basisregio-dataset aan (als je dat nog niet had gedaan)
