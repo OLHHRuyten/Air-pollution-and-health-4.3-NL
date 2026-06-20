@@ -9,7 +9,7 @@ output: pdf_document
 
 # Set-up your environment
 
-```{r package_install, echo=FALSE}
+```{r package_install, echo=FALSE, warning=FALSE}
 # install.packages("tidyverse")
 # install.packages("yaml")
 # install.packages("rmarkdown")
@@ -17,10 +17,9 @@ output: pdf_document
 # install.packages("ggplot2")
 # install.packages("sf")              
 # install.packages("rnaturalearth")      
-# yeinstall.packages("cbsodataR")  
-#install.packages("tinytex")
-#library(tinytex)
-#tinytex::install_tinytex()
+# install.packages("cbsodataR")  
+# install.packages("tinytex")
+# tinytex::install_tinytex()
 ```
 
 ```{r packages, echo=FALSE}
@@ -138,8 +137,8 @@ BA_BronnenVanStikstof <- BA_BronnenVanStikstof %>%
 BA_BronnenVanStikstof$Totaal <- BA_BronnenVanStikstof$Landbouw..bosbouw.en.visserij..mln.kg.+ BA_BronnenVanStikstof$Particuliere.huishoudens..mln.kg.+ BA_BronnenVanStikstof$Energiesector..mln.kg.+ BA_BronnenVanStikstof$Industrie.en.afval..mln.kg.+ BA_BronnenVanStikstof$Vervoer..mln.kg.+ BA_BronnenVanStikstof$Diensten..water.en.bouw..mln.kg.
 ```
 
-### Cleans the Meetlocaties dataset by splitting all data into separate columns and removing the first four rows.
-We also cleaned the Meetlocaties dataset by splitting all data into separate columns and removing the first four rows.
+### Cleaning meetlocaties
+Here we cleaned the Meetlocaties dataset by splitting all data into separate columns and removing the first four rows.
 
 ```{r echo=FALSE}
 # We overschrijven 'Meetlocaties' direct zodat de oude versie verdwijnt
@@ -255,8 +254,7 @@ Fijnstof_Other_regions <- Fijnstof_Regio %>% filter(Regio == "Other_regions")
 ### Simple graph about the general emission of particulate matter (fijnstof)
 
 This graph shows the evolution of total particulate matter emissions over the years from 2005 to 2025, where you can see that the total particulate matter emissions have almost halved over the years.
-
-```{r echo=FALSE}
+```{r include=FALSE}
 library(ggplot2)
 
 ggplot(AA_BronnenVanFijnstof, aes(x = X., y = Totaal)) +
@@ -270,12 +268,12 @@ ggplot(AA_BronnenVanFijnstof, aes(x = X., y = Totaal)) +
   theme_minimal()
 ```
 
+
 ### Simple graph about the general emission of nitrogen
 
 This graph shows the evolution of the emission of nitrogen over the years from 2005 to 2025, where you can see that the total particulate matter emissions have more than halved over the years.
 
-
-```{r echo=FALSE}
+```{r include=FALSE}
 
 library(ggplot2)
 
@@ -293,6 +291,7 @@ ggplot(BA_BronnenVanStikstof, aes(x = X., y = Totaal)) +
 ### Detailed and Multifaceted Map of Nitrogen Emission Origins
 
 A more detailed graph displays the different sources of nitrogen emissions using distinct colors, making it easier to distinguish between the various emission sources.
+
 
 ```{r echo=FALSE}
 
@@ -344,7 +343,6 @@ ggplot(BA_BronnenVanStikstof_long,
 ```
 
 ### Detailed and Multifaceted Map of Particulate matter Origins
-
 A more detailed graph displays the different sources of fine particulate matter emissions using distinct colors, making it easier to distinguish between the various emission sources.
 
 ```{r echo=FALSE}
@@ -396,7 +394,6 @@ ggplot(AA_BronnenVanFijnstof_long,
 ```
 
 ## 3.4 Creating a heatmap
-
 
 ```{r visualise_map, echo=FALSE}
 # 1. Installeer de kaart-bibliotheek als je die nog niet hebt
@@ -501,8 +498,8 @@ geom_jitter(width = 0.15, alpha = 0.4, color = "grey30",
     legend.position = "none", # Legenda is overbodig omdat de X-as het al vertelt
     plot.title = element_text(face = "bold", hjust = 0.5),
     plot.subtitle = element_text(hjust = 0.5)
-  ) +
-  scale_x_discrete(labels = c("Niet-Randstad" = "Other regions", "Randstad" = "Randstad"))
+  ) 
+ 
 
 ```
 
