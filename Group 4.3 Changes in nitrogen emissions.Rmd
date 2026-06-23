@@ -7,7 +7,7 @@ author:
 - Nicolaas Van Nipsen (2899432)
 - Robin Koldenhof (281138)
 - Naut Leuverink (2899534)
-date: "17 June 2026"
+date: "23 June 2026"
 group: "4.3"
 
 output: pdf_document
@@ -404,7 +404,7 @@ ggplot(AA_BronnenVanFijnstof_long,
 
 ## 3.4 Creating a heatmap
 
-```{r visualise_map, echo=FALSE}
+```{r visualise_map, echo=FALSE, message=FALSE, warning=FALSE}
 # 1. Installeer de kaart-bibliotheek als je die nog niet hebt
 # install.packages("rnaturalearthdata")
 
