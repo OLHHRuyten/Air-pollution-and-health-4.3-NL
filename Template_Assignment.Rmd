@@ -1,6 +1,12 @@
 ---
 title: "Changes in nitrogen emissions in the Netherlands"
-author: "Mike Ottervanger (2785946), Lucas Wolffenbuttel (2898864), Otto Ruyten (2893051), Nicolaas Van Nipsen (2899432), Robin Koldenhof (281138), Naut Leuverink (2899534) "
+author: 
+- Mike Ottervanger (2785946)
+- Lucas Wolffenbuttel (2898864)
+- Otto Ruyten (2893051)
+- Nicolaas Van Nipsen (2899432)
+- Robin Koldenhof (281138)
+- Naut Leuverink (2899534)
 date: "17 June 2026"
 group: "4.3"
 
@@ -9,7 +15,7 @@ output: pdf_document
 
 # Set-up your environment
 
-```{r package_install, echo=FALSE, warning=FALSE}
+```{r package_install, echo=FALSE, message=FALSE, warning=FALSE}
 # install.packages("tidyverse")
 # install.packages("yaml")
 # install.packages("rmarkdown")
@@ -22,7 +28,7 @@ output: pdf_document
 # tinytex::install_tinytex()
 ```
 
-```{r packages, echo=FALSE}
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
 require(tidyverse)
 require(rmarkdown)
 require(yaml)
@@ -288,10 +294,11 @@ ggplot(BA_BronnenVanStikstof, aes(x = X., y = Totaal)) +
   theme_minimal()
 ```
 
+
+
 ### Detailed and Multifaceted Map of Nitrogen Emission Origins
 
 A more detailed graph displays the different sources of nitrogen emissions using distinct colors, making it easier to distinguish between the various emission sources.
-
 
 ```{r echo=FALSE}
 
@@ -341,6 +348,8 @@ ggplot(BA_BronnenVanStikstof_long,
     plot.title = element_text(hjust = 0.5, face = "bold")
   )
 ```
+
+
 
 ### Detailed and Multifaceted Map of Particulate matter Origins
 A more detailed graph displays the different sources of fine particulate matter emissions using distinct colors, making it easier to distinguish between the various emission sources.
